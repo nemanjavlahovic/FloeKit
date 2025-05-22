@@ -16,7 +16,11 @@ let package = Package(
     targets: [
         .target(
             name: "FloeKit",
-            dependencies: []),
+            dependencies: [],
+            resources: [
+                .process("Resources")
+            ]
+        ),
         .testTarget(
             name: "FloeKitTests",
             dependencies: ["FloeKit"]),

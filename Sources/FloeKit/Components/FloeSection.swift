@@ -13,9 +13,9 @@ public struct FloeSection<Content: View>: View {
         title: String,
         subtitle: String? = nil,
         trailing: AnyView? = nil,
-        backgroundColor: Color = Color(.systemGray6),
+        backgroundColor: Color = Color.floePreviewSurface,
         cornerRadius: CGFloat = 14,
-        padding: EdgeInsets = EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16),
+        padding: FloeSpacing.PaddingStyle = .section,
         @ViewBuilder content: () -> Content
     ) {
         self.title = title
@@ -23,19 +23,19 @@ public struct FloeSection<Content: View>: View {
         self.trailing = trailing
         self.backgroundColor = backgroundColor
         self.cornerRadius = cornerRadius
-        self.padding = padding
+        self.padding = padding.edgeInsets
         self.content = content()
     }
     
     public var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: FloeSpacing.Size.md.value) {
             HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: FloeSpacing.Size.xs.value) {
                     Text(title)
-                        .font(.headline)
+                        .floeFont(.headline)
                     if let subtitle = subtitle {
                         Text(subtitle)
-                            .font(.subheadline)
+                            .floeFont(.subheadline)
                             .foregroundColor(.secondary)
                     }
                 }
@@ -50,8 +50,8 @@ public struct FloeSection<Content: View>: View {
         .background(
             RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                 .fill(backgroundColor)
-                .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 2)
-        )
+                .floeShadow(.soft)
+        )   
     }
 }
 

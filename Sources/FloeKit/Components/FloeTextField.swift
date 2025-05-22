@@ -6,17 +6,17 @@ public struct FloeTextField: View {
         
         var padding: EdgeInsets {
             switch self {
-            case .small: return EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12)
-            case .medium: return EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16)
-            case .large: return EdgeInsets(top: 16, leading: 20, bottom: 16, trailing: 20)
+            case .small: return FloeSpacing.TextFieldPadding.small.edgeInsets
+            case .medium: return FloeSpacing.TextFieldPadding.medium.edgeInsets
+            case .large: return FloeSpacing.TextFieldPadding.large.edgeInsets
             }
         }
         
         var font: Font {
             switch self {
-            case .small: return .body
-            case .medium: return .body
-            case .large: return .title3
+            case .small: return FloeFont.font(.caption)
+            case .medium: return FloeFont.font(.body)
+            case .large: return FloeFont.font(.headline)
             }
         }
         
@@ -40,8 +40,6 @@ public struct FloeTextField: View {
     private let leadingIcon: Image?
     private let trailingIcon: Image?
     private let isSecure: Bool
-    private let keyboardType: UIKeyboardType
-    private let textContentType: UITextContentType?
     private let characterLimit: Int?
     private let errorMessage: String?
     private let onCommit: (() -> Void)?
@@ -53,16 +51,14 @@ public struct FloeTextField: View {
         text: Binding<String>,
         placeholder: String,
         size: Size = .medium,
-        backgroundColor: Color = Color(.systemGray6),
+        backgroundColor: Color = Color.floePreviewSurface,
         borderColor: Color? = nil,
         borderWidth: CGFloat = 1.0,
-        textColor: Color = .primary,
+        textColor: Color = Color.floePreviewPrimary,
         cornerRadius: CGFloat = 14,
         leadingIcon: Image? = nil,
         trailingIcon: Image? = nil,
         isSecure: Bool = false,
-        keyboardType: UIKeyboardType = .default,
-        textContentType: UITextContentType? = nil,
         characterLimit: Int? = nil,
         errorMessage: String? = nil,
         onCommit: (() -> Void)? = nil
@@ -78,16 +74,14 @@ public struct FloeTextField: View {
         self.leadingIcon = leadingIcon
         self.trailingIcon = trailingIcon
         self.isSecure = isSecure
-        self.keyboardType = keyboardType
-        self.textContentType = textContentType
         self.characterLimit = characterLimit
         self.errorMessage = errorMessage
         self.onCommit = onCommit
     }
     
     public var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 8) {
+        VStack(alignment: .leading, spacing: FloeSpacing.Size.xs.value) {
+            HStack(spacing: FloeSpacing.Size.sm.value) {
                 if let leadingIcon = leadingIcon {
                     leadingIcon
                         .resizable()
@@ -109,8 +103,6 @@ public struct FloeTextField: View {
                         .font(size.font)
                         .foregroundColor(textColor)
                         .focused($isFocused)
-                        .keyboardType(keyboardType)
-                        .textContentType(textContentType)
                         .onSubmit { onCommit?() }
                 }
                 
@@ -134,7 +126,7 @@ public struct FloeTextField: View {
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .fill(backgroundColor)
-                    .shadow(color: .black.opacity(colorScheme == .dark ? 0.2 : 0.08), radius: 10, x: 0, y: 4)
+                    .floeShadow(.medium)
             )
             .overlay(
                 Group {
@@ -151,14 +143,14 @@ public struct FloeTextField: View {
             
             if let errorMessage = errorMessage, !errorMessage.isEmpty {
                 Text(errorMessage)
-                    .font(.caption)
+                    .floeFont(.caption)
                     .foregroundColor(.red)
                     .padding(.leading, 4)
             }
             
             if let limit = characterLimit {
                 Text("\(text.count)/\(limit)")
-                    .font(.caption)
+                    .floeFont(.caption)
                     .foregroundColor(text.count > limit ? .red : .gray)
                     .padding(.leading, 4)
             }

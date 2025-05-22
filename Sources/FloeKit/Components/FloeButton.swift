@@ -6,17 +6,17 @@ public struct FloeButton: View {
         
         var padding: EdgeInsets {
             switch self {
-            case .small: return EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-            case .medium: return EdgeInsets(top: 12, leading: 24, bottom: 12, trailing: 24)
-            case .large: return EdgeInsets(top: 16, leading: 32, bottom: 16, trailing: 32)
+            case .small: return FloeSpacing.ButtonPadding.small.edgeInsets
+            case .medium: return FloeSpacing.ButtonPadding.medium.edgeInsets
+            case .large: return FloeSpacing.ButtonPadding.large.edgeInsets
             }
         }
         
         var font: Font {
             switch self {
-            case .small: return .body
-            case .medium: return .headline
-            case .large: return .title3
+            case .small: return FloeFont.font(.caption)
+            case .medium: return FloeFont.font(.button)
+            case .large: return FloeFont.font(.headline)
             }
         }
         
@@ -47,10 +47,10 @@ public struct FloeButton: View {
     public init(_ title: String, 
                 size: Size = .medium, 
                 isEnabled: Bool = true,
-                backgroundColor: Color = Color(.systemGray),
+                backgroundColor: Color = Color.floePreviewSurface,
                 borderColor: Color? = nil,
                 borderWidth: CGFloat = 1.0,
-                textColor: Color = .primary,
+                textColor: Color = Color.floePreviewPrimary,
                 cornerRadius: CGFloat = 14,
                 icon: Image? = nil,
                 isLoading: Bool = false,
@@ -72,7 +72,7 @@ public struct FloeButton: View {
         Button(action: {
             if isEnabled && !isLoading { action() }
         }) {
-            HStack(spacing: 8) {
+            HStack(spacing: FloeSpacing.Size.sm.value) {
                 if isLoading {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle(tint: textColor))
@@ -93,7 +93,7 @@ public struct FloeButton: View {
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .fill(backgroundColor)
-                    .shadow(color: .black.opacity(colorScheme == .dark ? 0.2 : 0.08), radius: 10, x: 0, y: 4)
+                    .floeShadow(.medium)
             )
             .overlay(
                 Group {
@@ -126,27 +126,25 @@ struct FloeButton_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             VStack(spacing: 20) {
-                FloeButton("Default Button", size: .small, backgroundColor: .blue) {}
+                FloeButton("Default Button", size: .small, backgroundColor: Color.floePreviewPrimary, textColor: .white) {}
                 
                 FloeButton("With Icon", 
                           size: .medium,
-                          backgroundColor: .green,
-                          borderColor: .black,
-                          borderWidth: 2,
+                          backgroundColor: Color.floePreviewSecondary,
+                          textColor: .white,
                           icon: Image(systemName: "star.fill")) {}
                 
                 FloeButton("Loading State",
                           size: .large,
-                          backgroundColor: .purple,
-                          textColor: .white,
+                          backgroundColor: Color.floePreviewSurface,
+                          textColor: Color.floePreviewPrimary,
                           isLoading: true) {}
                 
                 FloeButton("Custom Style",
                           size: .medium,
-                          backgroundColor: .orange,
-                          borderColor: .black,
+                          backgroundColor: Color.floePreviewAccent,
                           textColor: .white,
-                          cornerRadius: 8,
+                          cornerRadius: 12,
                           icon: Image(systemName: "plus.circle.fill")) {}
             }
             .padding()
@@ -154,27 +152,25 @@ struct FloeButton_Previews: PreviewProvider {
             .environment(\.colorScheme, .light)
             
             VStack(spacing: 20) {
-                FloeButton("Default Button", size: .small, backgroundColor: .blue) {}
+                FloeButton("Default Button", size: .small, backgroundColor: Color.floePreviewPrimary, textColor: .white) {}
                 
                 FloeButton("With Icon", 
                           size: .medium,
-                          backgroundColor: .green,
-                          borderColor: .black,
-                          borderWidth: 2,
+                          backgroundColor: Color.floePreviewSecondary,
+                          textColor: .white,
                           icon: Image(systemName: "star.fill")) {}
                 
                 FloeButton("Loading State",
                           size: .large,
-                          backgroundColor: .purple,
-                          textColor: .white,
+                          backgroundColor: Color.floePreviewSurface,
+                          textColor: Color.floePreviewPrimary,
                           isLoading: true) {}
                 
                 FloeButton("Custom Style",
                           size: .medium,
-                          backgroundColor: .orange,
-                          borderColor: .black,
+                          backgroundColor: Color.floePreviewAccent,
                           textColor: .white,
-                          cornerRadius: 8,
+                          cornerRadius: 12,
                           icon: Image(systemName: "plus.circle.fill")) {}
             }
             .padding()
