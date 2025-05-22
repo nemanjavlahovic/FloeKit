@@ -302,19 +302,6 @@ FloeKit supports comprehensive theming through color asset overrides:
 
 ---
 
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### Development Setup
-
-1. Clone the repository
-2. Open in Xcode or your preferred Swift IDE
-3. Run tests: `swift test`
-4. Build: `swift build`
-
----
-
 ## 📄 License
 
 FloeKit is available under the MIT license. See [LICENSE](LICENSE) for details.
