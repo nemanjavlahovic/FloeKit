@@ -35,13 +35,13 @@ Or add to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/nemanjavlahovic/FloeKit", from: "0.1.0")
+    .package(url: "https://github.com/nemanjavlahovic/FloeKit", from: "0.2.0")
 ]
 ```
 
 ---
 
-## 🧱 Components (v0.1)
+## 🧱 Components (v0.2)
 
 ### FloeButton
 Soft, elevated buttons with multiple sizes, loading states, and icon support.
@@ -222,6 +222,117 @@ FloeAvatarGroup(
 
 ---
 
+### FloeToast *(New)*
+Lightweight, animated toast notifications with swipe-to-dismiss and customizable styles.
+
+```swift
+@StateObject private var toastManager = FloeToastManager()
+
+// Basic usage with convenience methods
+.floeToast(FloeToast.success("Success!", message: "Operation completed"))
+.floeToast(FloeToast.error("Error!", message: "Something went wrong"))
+.floeToast(FloeToast.warning("Warning!", message: "Please check your input"))
+.floeToast(FloeToast.info("Info", message: "New update available"))
+
+// Custom toast with action
+FloeToast("Custom Toast",
+          message: "With action button",
+          style: .custom(backgroundColor: .purple, 
+                        foregroundColor: .white, 
+                        icon: Image(systemName: "star.fill")),
+          actionTitle: "Action") {
+    // Action handler
+}
+
+// Using Toast Manager
+toastManager.show(FloeToast.success("Saved successfully!"))
+
+// Advanced configuration
+FloeToast("Upload Complete",
+          message: "Your file has been uploaded",
+          style: .success,
+          position: .bottom,
+          duration: 5.0,
+          actionTitle: "View") {
+    // View file action
+} onDismiss: {
+    print("Toast dismissed")
+}
+```
+
+**Styles:** Success, warning, error, info, custom  
+**Positions:** Top, bottom  
+**Features:** Auto-dismiss, swipe gestures, action buttons, custom styling, animations
+
+---
+
+### FloeTabBar *(New)*
+Modern floating tab bar with smooth animations and flexible configuration.
+
+```swift
+// Define tabs
+let tabs = [
+    FloeTabBar.Tab.systemIcon(id: "home", title: "Home", 
+                             systemName: "house", selectedSystemName: "house.fill"),
+    FloeTabBar.Tab.systemIcon(id: "search", title: "Search", 
+                             systemName: "magnifyingglass", badge: "3"),
+    FloeTabBar.Tab.systemIcon(id: "favorites", title: "Favorites", 
+                             systemName: "heart", selectedSystemName: "heart.fill"),
+    FloeTabBar.Tab.systemIcon(id: "profile", title: "Profile", 
+                             systemName: "person", selectedSystemName: "person.fill")
+]
+
+// Basic tab bar
+@State private var selectedTab = "home"
+
+FloeTabBar(
+    tabs: tabs,
+    selectedTabId: selectedTab,
+    onTabSelected: { selectedTab = $0 }
+)
+
+// Floating style with central action
+FloeTabBar(
+    tabs: tabs,
+    selectedTabId: selectedTab,
+    onTabSelected: { selectedTab = $0 },
+    style: .floating,
+    indicatorStyle: .pill,
+    centralAction: { print("Add new item") },
+    centralActionIcon: Image(systemName: "plus.circle.fill")
+)
+
+// Scrollable for many tabs
+FloeTabBar(
+    tabs: manyTabs,
+    selectedTabId: selectedTab,
+    onTabSelected: { selectedTab = $0 },
+    isScrollable: true
+)
+
+// Complete tab bar controller
+FloeTabBarController(
+    tabs: tabs,
+    initialSelection: "home",
+    style: .floating
+) { selectedTab in
+    // Content for each tab
+    switch selectedTab {
+    case "home": HomeView()
+    case "search": SearchView()
+    case "favorites": FavoritesView()
+    case "profile": ProfileView()
+    default: EmptyView()
+    }
+}
+```
+
+**Styles:** Floating, attached, minimal  
+**Indicators:** Pill, underline, background, none  
+**Features:** Badges, central action button, scrollable tabs, animations, custom icons
+
+---
+
 ## 🛠️ Utilities
 
 ### FloeColors
@@ -300,39 +411,47 @@ RoundedRectangle(cornerRadius: 12)
 
 ## 🗺️ Roadmap
 
-### 📝 FloeTextView *(Coming Soon)*
-Multi-line, expandable text view with rich formatting support.
-- Attributed text support
-- "Read more/less" functionality
-- Inline links and formatting
-- Character/line limits
+### 🎛️ FloeSlider & FloeStepper *(Next Phase)*
+Custom sliders and steppers with enhanced visual feedback.
+- Smooth animations and haptic feedback
+- Custom track styling and thumb designs
+- Value labels and range indicators
+- Accessibility support
 
-### ⏳ FloeProgressIndicator *(Planned)*
-Modern progress indicators with enhanced feedback.
-- Linear and circular styles
-- Animated transitions
-- Success/error states
-- Haptic feedback
+### 📅 FloeDatePicker & FloeTimePicker *(Next Phase)*
+Modern date and time selection components.
+- Inline and compact picker styles
+- Custom styling with FloeKit design language
+- Range selection support
+- Localization and timezone support
 
-### 🗂️ FloeSectionHeader *(Planned)*
-Reusable section headers with actions.
-- Title and subtitle support
-- Trailing action buttons
-- Collapsible sections
+### 🔍 FloeSearchBar *(Next Phase)*
+Enhanced search bar with modern styling and functionality.
+- Animated search icon and clear button
+- Search suggestions and recent searches
+- Voice input support
+- Custom filtering and debouncing
 
-### 🗨️ FloeToast *(Planned)*
-Lightweight toast notifications.
-- Auto-dismiss functionality
-- Custom styling
-- Action buttons
-- Queue management
+### 📋 FloeList & FloeGrid *(Planned)*
+Enhanced list and grid components with built-in styling.
+- Pull-to-refresh and infinite scrolling
+- Swipe actions and reordering
+- Section headers with sticky behavior
+- Loading states and empty state views
 
-### 🧩 FloeTabBar *(Planned)*
-Modern floating tab bar.
-- Smooth animations
-- Scrollable tabs
-- Central action button
-- Custom indicators
+### 🎨 FloeColorPicker *(Planned)*
+Modern color selection component.
+- Multiple picker styles (wheel, palette, sliders)
+- Custom color palettes and recent colors
+- Hex, RGB, HSL input support
+- Eyedropper functionality
+
+### 📊 FloeChart *(Planned)*
+Simple charting components for basic data visualization.
+- Line, bar, and pie chart support
+- Animated data updates
+- Interactive tooltips and legends
+- Customizable colors and styling
 
 ---
 
