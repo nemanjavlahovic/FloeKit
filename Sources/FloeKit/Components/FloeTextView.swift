@@ -1,4 +1,7 @@
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public struct FloeTextView: View {
     public enum Size {
@@ -189,7 +192,9 @@ public struct FloeTextView: View {
                         .focused($isFocused)
                         .background(Color.clear)
                         .onAppear {
+                            #if canImport(UIKit)
                             UITextView.appearance().backgroundColor = .clear
+                            #endif
                         }
                         .onChange(of: text) { newValue in
                             handleTextChange(newValue)

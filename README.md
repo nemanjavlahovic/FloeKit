@@ -161,6 +161,67 @@ FloeSection(title: "Profile",
 
 ---
 
+### FloeAvatar
+Elegant, customizable avatar components with status indicators and grouping support.
+
+```swift
+// Basic avatars
+FloeAvatar.initials("JD")
+FloeAvatar.icon("person.fill")
+FloeAvatar.placeholder()
+
+// With image
+FloeAvatar(image: Image("user-photo"))
+
+// Different sizes
+FloeAvatar.initials("SM", size: .small)
+FloeAvatar.initials("LG", size: .large)
+FloeAvatar.initials("XL", size: .extraLarge)
+
+// With status indicators
+FloeAvatar.online(initials: "ON")
+FloeAvatar(initials: "AW", statusIndicator: .away)
+FloeAvatar(initials: "BY", statusIndicator: .busy)
+FloeAvatar(initials: "CT", statusIndicator: .custom(.purple))
+
+// Custom styling
+FloeAvatar(
+    initials: "VIP",
+    backgroundColor: .black,
+    foregroundColor: .gold,
+    borderColor: .gold,
+    borderWidth: 2,
+    shadowStyle: .elevated
+)
+
+// Interactive avatars
+FloeAvatar.initials("TAP") {
+    print("Avatar tapped!")
+}
+```
+
+**Grouped Avatars:**
+```swift
+// Stacked avatars with overlap
+FloeAvatarGroup(
+    avatars: [avatar1, avatar2, avatar3],
+    style: .stacked,
+    maxVisible: 3
+)
+
+// Grid layout
+FloeAvatarGroup(
+    avatars: avatarArray,
+    style: .grid(columns: 2)
+)
+```
+
+**Sizes:** `.small`, `.medium`, `.large`, `.extraLarge`  
+**Status:** Online, offline, away, busy, custom colors  
+**Features:** Images, initials, SF Symbols, borders, shadows, tap actions, grouping
+
+---
+
 ## 🛠️ Utilities
 
 ### FloeColors
@@ -258,20 +319,6 @@ Reusable section headers with actions.
 - Title and subtitle support
 - Trailing action buttons
 - Collapsible sections
-
-### 🧾 FloeListItem *(Planned)*
-Highly customizable list rows.
-- Leading/trailing content
-- Swipe actions
-- Badges and accessories
-- Tap handling
-
-### 🖼️ FloeAvatar *(Planned)*
-Elegant avatar components.
-- Image, initials, or icon fallbacks
-- Online/offline indicators
-- Grouped avatars
-- Multiple sizes
 
 ### 🗨️ FloeToast *(Planned)*
 Lightweight toast notifications.
