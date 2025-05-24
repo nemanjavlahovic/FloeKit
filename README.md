@@ -35,7 +35,7 @@ Or add to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/nemanjavlahovic/FloeKit", from: "0.2.0")
+    .package(url: "https://github.com/nemanjavlahovic/FloeKit", from: "0.3.0")
 ]
 ```
 
@@ -330,6 +330,57 @@ FloeTabBarController(
 **Styles:** Floating, attached, minimal  
 **Indicators:** Pill, underline, background, none  
 **Features:** Badges, central action button, scrollable tabs, animations, custom icons
+
+---
+
+### FloeSlider *(New)*
+Customizable slider with haptic feedback, value labels, and both horizontal/vertical orientations.
+
+```swift
+@State private var volume: Double = 50
+@State private var brightness: Double = 0.7
+
+// Basic slider
+FloeSlider(value: $volume, in: 0...100, showLabels: .value)
+
+// Percentage slider with convenience method
+FloeSlider.percentage(value: $volume, showLabels: true)
+
+// Volume-style slider (0-1)
+FloeSlider.volume(value: $brightness)
+
+// Custom range with steps
+FloeSlider(
+    value: $rating,
+    in: 0...5,
+    step: 0.5,
+    showLabels: .value,
+    showMinMax: true
+)
+
+// Vertical slider
+FloeSlider(
+    value: $volume,
+    in: 0...100,
+    orientation: .vertical,
+    showLabels: .percentage
+)
+.frame(height: 200)
+
+// Custom styling
+FloeSlider(
+    value: $temperature,
+    in: 16...30,
+    showLabels: .custom({ "\(Int($0))°C" }),
+    fillColor: .orange,
+    thumbColor: .red,
+    enableHaptics: true
+)
+```
+
+**Orientations:** Horizontal, vertical  
+**Label Styles:** None, value, percentage, custom formatter  
+**Features:** Haptic feedback, range indicators, step values, custom styling, accessibility
 
 ---
 
