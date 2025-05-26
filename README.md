@@ -41,7 +41,7 @@ dependencies: [
 
 ---
 
-## 🧱 Components (v0.2)
+## 🧱 Components
 
 ### FloeButton
 Soft, elevated buttons with multiple sizes, loading states, and icon support.
@@ -57,6 +57,7 @@ FloeButton("Get Started") {
 }
 
 // Button with icon and custom styling
+// Note: Parameters can be specified in any order using named parameters
 FloeButton("Save", 
           size: .large,
           backgroundColor: .blue,
@@ -84,6 +85,7 @@ Elegant text input with focus states, icons, validation, and character limits.
 ```swift
 @State private var email = ""
 @State private var password = ""
+@State private var bio = ""
 
 // Basic text field
 FloeTextField(text: $email, placeholder: "Email address")
@@ -134,7 +136,7 @@ FloeCard {
 // Custom styling
 FloeCard(backgroundColor: .blue.opacity(0.1),
          shadowStyle: .elevated,
-         padding: .generous) {
+         padding: .spacious) {
     // Content
 }
 ```
@@ -172,8 +174,8 @@ FloeAvatar(initials: "CT", statusIndicator: .custom(.purple))
 FloeAvatar(
     initials: "VIP",
     backgroundColor: .black,
-    foregroundColor: .gold,
-    borderColor: .gold,
+    foregroundColor: .yellow,
+    borderColor: .yellow,
     borderWidth: 2,
     shadowStyle: .elevated
 )
@@ -479,7 +481,7 @@ Consistent color palette with automatic light/dark mode support.
 // Color tokens available:
 // - Primary, Secondary, Accent, Error
 // - Background, Surface
-// - Neutral scale (neutral0 to neutral90)
+// - Neutral scale (neutral0, neutral10, neutral20, neutral30, neutral40, neutral90)
 ```
 
 ---
@@ -518,6 +520,8 @@ SomeView()
     .floePadding(.card)        // Standard card padding
     .floePadding(.section)     // Section container padding
     .floePadding(.comfortable) // Comfortable all-around padding
+    .floePadding(.spacious)    // Spacious padding
+    .floePadding(.generous)    // Generous padding
 
 // Custom spacing
 SomeView()
@@ -544,12 +548,12 @@ RoundedRectangle(cornerRadius: 12)
 
 ## 🗺️ Roadmap
 
-### 🎛️ FloeSlider & FloeStepper *(Next Phase)*
-Custom sliders and steppers with enhanced visual feedback.
+### 🎛️ FloeStepper *(Next Phase)*
+Custom stepper component with enhanced visual feedback.
 - Smooth animations and haptic feedback
-- Custom track styling and thumb designs
-- Value labels and range indicators
-- Accessibility support
+- Custom styling and button designs
+- Long press for rapid changes
+- Custom step values and ranges
 
 ### 📅 FloeDatePicker & FloeTimePicker *(Next Phase)*
 Modern date and time selection components.
@@ -596,7 +600,7 @@ FloeKit supports comprehensive theming through color asset overrides:
 2. Create color sets with FloeKit's color names:
    - `FloePrimary`, `FloeSecondary`, `FloeAccent`
    - `FloeBackground`, `FloeSurface`
-   - `FloeNeutral0` through `FloeNeutral90`
+   - `FloeNeutral0`, `FloeNeutral10`, `FloeNeutral20`, `FloeNeutral30`, `FloeNeutral40`, `FloeNeutral90`
 3. FloeKit will automatically use your custom colors
 
 ---
