@@ -139,30 +139,6 @@ FloeCard(backgroundColor: .blue.opacity(0.1),
 
 ---
 
-### FloeSection
-Reusable section containers with titles, subtitles, and trailing content.
-
-```swift
-FloeSection(title: "Settings") {
-    VStack {
-        Text("Notifications")
-        Text("Privacy")
-        Text("Account")
-    }
-}
-
-// With subtitle and trailing button
-FloeSection(title: "Profile", 
-           subtitle: "Manage your information",
-           trailing: AnyView(Button("Edit") { })) {
-    // Content
-}
-```
-
-**Features:** Optional subtitles, trailing content, consistent spacing
-
----
-
 ### FloeAvatar
 Elegant, customizable avatar components with status indicators and grouping support.
 

@@ -533,18 +533,7 @@ struct FloeProgressIndicator_Previews: PreviewProvider {
                                 .floeFont(.caption)
                                 .foregroundColor(.secondary)
                         }
-                        
-                        VStack(spacing: FloeSpacing.Size.xs.value) {
-                            FloeProgressIndicator(
-                                progress: animatedProgress,
-                                style: .circular,
-                                size: .large,
-                                showPercentage: true
-                            )
-                            Text("Auto Animated")
-                                .floeFont(.caption)
-                                .foregroundColor(.secondary)
-                        }
+
                     }
                     
                     Slider(value: $determinateProgress, in: 0...1)
