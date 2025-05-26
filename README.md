@@ -1,4 +1,5 @@
 # FloeKit
+![7a368114-cc08-48e8-99fa-a7b060ece85c](https://github.com/user-attachments/assets/f810b190-6d9c-45f0-8dc9-3642ec033c04)
 
 > **Elegant, modular UI building blocks for SwiftUI**
 
