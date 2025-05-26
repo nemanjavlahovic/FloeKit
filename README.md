@@ -8,6 +8,33 @@ Inspired by floating ice sheets, **FloeKit** provides calm, elegant, and modular
 ![Platform](https://img.shields.io/badge/Platform-iOS%2015%2B%20%7C%20macOS%2012%2B-blue.svg)
 ![SPM](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)
 
+<details>
+<summary>📋 Table of Contents</summary>
+
+- [✨ Features](#-features)
+- [🚀 Installation](#-installation)
+- [🧱 Components](#-components)
+  - [FloeButton](#floebutton)
+  - [FloeTextField](#floetextfield)
+  - [FloeCard](#floecard)
+  - [FloeAvatar](#floeavatar)
+  - [FloeToast](#floetoast-new)
+  - [FloeTabBar](#floetabbar-new)
+  - [FloeSlider](#floeslider-new)
+  - [FloeTextView](#floetextview-new)
+  - [FloeProgressIndicator](#floeprogressindicator-new)
+- [🛠️ Utilities](#️-utilities)
+  - [FloeColors](#floecolors)
+  - [FloeFont](#floefont)
+  - [FloeSpacing](#floespacing)
+  - [FloeShadow](#floeshadow)
+- [🗺️ Roadmap](#️-roadmap)
+- [🎨 Theming](#-theming)
+- [📄 License](#-license)
+- [🙏 Acknowledgments](#-acknowledgments)
+
+</details>
+
 ---
 
 ## ✨ Features
