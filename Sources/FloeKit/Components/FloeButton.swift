@@ -137,6 +137,7 @@ struct FloeButton_Previews: PreviewProvider {
                 FloeButton("Loading State",
                           size: .large,
                           backgroundColor: Color.floePreviewSurface,
+                          borderColor: Color.floePreviewPrimary.opacity(0.3),
                           textColor: Color.floePreviewPrimary,
                           isLoading: true) {}
                 
@@ -163,6 +164,7 @@ struct FloeButton_Previews: PreviewProvider {
                 FloeButton("Loading State",
                           size: .large,
                           backgroundColor: Color.floePreviewSurface,
+                          borderColor: Color.floePreviewPrimary.opacity(0.3),
                           textColor: Color.floePreviewPrimary,
                           isLoading: true) {}
                 
