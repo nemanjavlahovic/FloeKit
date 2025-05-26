@@ -11,6 +11,7 @@ let package = Package(
         .library(
             name: "FloeKit",
             targets: ["FloeKit"]),
+            description: "Elegant, modular UI building blocks for SwiftUI with theming, typography, and spacing."
     ],
     dependencies: [],
     targets: [
