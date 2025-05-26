@@ -79,6 +79,8 @@ FloeButton("Processing...", isLoading: true) {
 ### FloeTextField
 Elegant text input with focus states, icons, validation, and character limits.
 
+![FloeTextField Examples](Documentation/Screenshots/floe_textfield_ss.png)
+
 ```swift
 @State private var email = ""
 @State private var password = ""
@@ -117,6 +119,8 @@ FloeTextField(
 ### FloeCard
 Clean, elevated containers with consistent shadows and padding.
 
+![FloeCard Examples](Documentation/Screenshots/floe_card_ss.png)
+
 ```swift
 FloeCard {
     VStack {
@@ -141,6 +145,8 @@ FloeCard(backgroundColor: .blue.opacity(0.1),
 
 ### FloeAvatar
 Elegant, customizable avatar components with status indicators and grouping support.
+
+![FloeAvatar Examples](Documentation/Screenshots/floe_avatar_ss.png)
 
 ```swift
 // Basic avatars
@@ -359,6 +365,104 @@ FloeSlider(
 **Orientations:** Horizontal, vertical  
 **Label Styles:** None, value, percentage, custom formatter  
 **Features:** Haptic feedback, range indicators, step values, custom styling, accessibility
+
+---
+
+### FloeTextView *(New)*
+Rich text display and editing component with expansion controls and character limits.
+
+![FloeTextView Examples](Documentation/Screenshots/floe_textview_ss.png)
+
+```swift
+@State private var editableText = ""
+@State private var limitedText = ""
+
+// Basic editable text view
+FloeTextView(
+    text: $editableText,
+    placeholder: "Enter your thoughts...",
+    size: .medium
+)
+
+// Read-only with expansion
+FloeTextView.readOnly(
+    text: "Long text content that can be expanded...",
+    expansionStyle: .readMore(previewLines: 2)
+)
+
+// With character limit
+FloeTextView.withCharacterLimit(
+    text: $limitedText,
+    placeholder: "Bio (max 100 characters)",
+    characterLimit: 100,
+    size: .small
+)
+
+// Attributed text with rich formatting
+FloeTextView.attributedText(
+    attributedString,
+    size: .medium,
+    expansionStyle: .readMore(previewLines: 3)
+)
+```
+
+**Sizes:** `.small`, `.medium`, `.large`  
+**Expansion Styles:** Read more/less, character limits, custom  
+**Features:** Rich text support, smooth animations, character counting, accessibility
+
+---
+
+### FloeProgressIndicator *(New)*
+Versatile progress indicators with linear and circular styles, supporting both determinate and indeterminate states.
+
+![FloeProgressIndicator Demo](Documentation/Screenshots/floe_progress_indicator_rec.mov)
+
+```swift
+@State private var progress: Double = 0.65
+
+// Linear progress indicators
+FloeProgressIndicator(
+    progress: progress,
+    style: .linear,
+    size: .medium,
+    showPercentage: true
+)
+
+// Circular progress indicators
+FloeProgressIndicator(
+    progress: 0.75,
+    style: .circular,
+    size: .large,
+    showPercentage: true
+)
+
+// Indeterminate loading
+FloeProgressIndicator.indeterminate(
+    style: .circular,
+    size: .medium,
+    color: .blue
+)
+
+// State-based indicators
+FloeProgressIndicator.loading(style: .circular, size: .medium)
+FloeProgressIndicator.success(style: .circular, size: .medium)
+FloeProgressIndicator.error(style: .circular, size: .medium)
+
+// Custom styling
+FloeProgressIndicator(
+    progress: progress,
+    style: .linear,
+    size: .large,
+    color: .purple,
+    backgroundColor: .gray.opacity(0.2),
+    showPercentage: true
+)
+```
+
+**Styles:** Linear, circular  
+**States:** Determinate, indeterminate, loading, success, error  
+**Sizes:** `.small`, `.medium`, `.large`  
+**Features:** Smooth animations, custom colors, percentage display, accessibility
 
 ---
 
