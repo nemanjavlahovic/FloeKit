@@ -46,6 +46,8 @@ dependencies: [
 ### FloeButton
 Soft, elevated buttons with multiple sizes, loading states, and icon support.
 
+![FloeButton Examples](Documentation/Screenshots/floe_button_ss.png)
+
 ```swift
 import FloeKit
 
