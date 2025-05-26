@@ -10,8 +10,7 @@ let package = Package(
     products: [
         .library(
             name: "FloeKit",
-            targets: ["FloeKit"]),
-            description: "Elegant, modular UI building blocks for SwiftUI with theming, typography, and spacing."
+            targets: ["FloeKit"])
     ],
     dependencies: [],
     targets: [
