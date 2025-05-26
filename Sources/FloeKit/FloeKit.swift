@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - FloeKit Module
 public struct FloeKit {
-    public static let version = "0.3.0"
+    public static let version = "0.3.1"
     
     /// Initialize FloeKit with any global configuration if needed
     public static func configure() {
