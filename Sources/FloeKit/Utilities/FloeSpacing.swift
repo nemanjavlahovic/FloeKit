@@ -90,6 +90,22 @@ public struct FloeSpacing {
             }
         }
     }
+    
+    // MARK: - Spacing Methods
+    /// Returns the spacing value for a given size
+    /// - Parameter size: The spacing size
+    /// - Returns: The CGFloat value for the spacing
+    public static func spacing(for size: Size) -> CGFloat {
+        return size.value
+    }
+    
+    // MARK: - Common Spacing Aliases
+    public static let extraSmall = Size.xs.value
+    public static let small = Size.sm.value
+    public static let medium = Size.md.value
+    public static let large = Size.lg.value
+    public static let extraLarge = Size.xl.value
+    public static let cornerRadius: CGFloat = 12
 }
 
 // MARK: - View Extensions

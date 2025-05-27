@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - FloeKit Module
 public struct FloeKit {
-    public static let version = "0.3.1"
+    public static let version = "0.3.2"
     
     /// Initialize FloeKit with any global configuration if needed
     public static func configure() {
@@ -16,6 +16,7 @@ public struct FloeKit {
 
 // This file serves as the main entry point and ensures the module compiles correctly.
 // Components available after importing FloeKit:
-// - FloeButton, FloeTextField, FloeCard, FloeAvatar
+// - FloeButton, FloeTextField, FloeCard, FloeAvatar, FloeToggle
 // - FloeToast, FloeTabBar, FloeSlider, FloeTextView, FloeProgressIndicator
-// - FloeColors, FloeFont, FloeSpacing, FloeShadow utilities 
+// - FloeColors, FloeFont, FloeSpacing, FloeShadow utilities
+// - View+FloeModifiers, Color+FloeExtensions (Extension utilities) 

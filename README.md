@@ -283,6 +283,9 @@ FloeToast("Upload Complete",
 ### FloeTabBar *(New)*
 Modern floating tab bar with smooth animations and flexible configuration.
 
+![FloeTabBar Result Builder](Documentation/Screenshots/floe_tabbar_result_builder_ss.png)
+![FloeTabBar Enhanced Badges](Documentation/Screenshots/floe_tabbar_enhanced_badges_ss.png)
+
 ```swift
 // Define tabs
 let tabs = [
