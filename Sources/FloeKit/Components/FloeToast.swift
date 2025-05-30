@@ -10,10 +10,10 @@ public struct FloeToast: View {
         
         var backgroundColor: Color {
             switch self {
-            case .success: return Color.floePreviewSecondary
-            case .warning: return Color.floePreviewAccent
-            case .error: return Color.floePreviewError
-            case .info: return Color.floePreviewPrimary
+            case .success: return FloeColors.success
+            case .warning: return FloeColors.warning
+            case .error: return FloeColors.error
+            case .info: return FloeColors.primary
             case .custom(let backgroundColor, _, _): return backgroundColor
             }
         }

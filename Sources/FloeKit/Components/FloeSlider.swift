@@ -104,8 +104,8 @@ public struct FloeSlider: View {
         orientation: Orientation = .horizontal,
         showLabels: LabelStyle = .none,
         showMinMax: Bool = false,
-        trackColor: Color = Color.floePreviewSurface,
-        fillColor: Color = Color.floePreviewPrimary,
+        trackColor: Color = FloeColors.neutral20,
+        fillColor: Color = FloeColors.primary,
         thumbColor: Color = .white,
         thumbBorderColor: Color? = nil,
         thumbBorderWidth: CGFloat = 2,
@@ -156,7 +156,7 @@ public struct FloeSlider: View {
     private var valueLabel: some View {
         Text(showLabels.format(value, range: range))
             .font(size.font)
-            .foregroundColor(Color.floePreviewPrimary)
+            .foregroundColor(FloeColors.primary)
             .fontWeight(.medium)
     }
     
@@ -175,7 +175,7 @@ public struct FloeSlider: View {
                 // Fill track
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .fill(fillColor)
-                    .frame(width: thumbOffset + size.thumbSize / 2, height: size.trackHeight)
+                    .frame(width: max(0, min(thumbOffset + size.thumbSize / 2, trackWidth)), height: size.trackHeight)
                 
                 // Thumb
                 Circle()
@@ -282,13 +282,13 @@ public struct FloeSlider: View {
         HStack {
             Text(showLabels.format(range.lowerBound, range: range))
                 .font(size.font)
-                .foregroundColor(Color.floePreviewNeutral)
+                .foregroundColor(FloeColors.neutral40)
             
             Spacer()
             
             Text(showLabels.format(range.upperBound, range: range))
                 .font(size.font)
-                .foregroundColor(Color.floePreviewNeutral)
+                .foregroundColor(FloeColors.neutral40)
         }
     }
     
@@ -296,13 +296,17 @@ public struct FloeSlider: View {
     
     private func thumbPosition(in trackWidth: CGFloat) -> CGFloat {
         let normalizedValue = (value - range.lowerBound) / (range.upperBound - range.lowerBound)
-        let availableWidth = trackWidth - size.thumbSize
+        let availableWidth = max(0, trackWidth - size.thumbSize)
         return normalizedValue * availableWidth
     }
     
     private func valueFromPosition(_ position: CGFloat, trackWidth: CGFloat) -> Double {
-        let availableWidth = trackWidth - size.thumbSize
-        let normalizedPosition = max(0, min(position - size.thumbSize / 2, availableWidth)) / availableWidth
+        let availableWidth = max(0, trackWidth - size.thumbSize)
+        guard availableWidth > 0 else { return range.lowerBound }
+        
+        let clampedPosition = max(0, min(position, trackWidth))
+        let adjustedPosition = max(0, min(clampedPosition - size.thumbSize / 2, availableWidth))
+        let normalizedPosition = adjustedPosition / availableWidth
         let newValue = range.lowerBound + normalizedPosition * (range.upperBound - range.lowerBound)
         
         if let step = step {
@@ -364,7 +368,7 @@ public extension FloeSlider {
             size: size,
             orientation: orientation,
             showLabels: .percentage,
-            fillColor: Color.floePreviewSecondary,
+            fillColor: FloeColors.secondary,
             enableHaptics: true,
             onEditingChanged: onEditingChanged
         )
@@ -376,13 +380,15 @@ public extension FloeSlider {
 struct FloeSlider_Previews: PreviewProvider {
     static var previews: some View {
         Group {
+            // Dark mode preview (default)
             InteractiveSliderPreview()
-                .previewDisplayName("Interactive - Light Mode")
-                .environment(\.colorScheme, .light)
-            
-            InteractiveSliderPreview()
+                .preferredColorScheme(.dark)
                 .previewDisplayName("Interactive - Dark Mode")
-                .environment(\.colorScheme, .dark)
+            
+            // Light mode preview
+            InteractiveSliderPreview()
+                .preferredColorScheme(.light)
+                .previewDisplayName("Interactive - Light Mode")
         }
         .previewLayout(.sizeThatFits)
     }
@@ -477,23 +483,26 @@ private struct InteractiveSliderPreview: View {
                             in: 0...100,
                             orientation: .vertical,
                             showLabels: .percentage,
-                            fillColor: Color.floePreviewSecondary
+                            fillColor: FloeColors.secondary
                         )
                         .frame(height: 200)
                         Text("\(Int(verticalValue))%")
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
+                    .frame(maxWidth: .infinity)
                     
                     // Volume Style
                     VStack {
                         Text("Brightness")
                             .font(.headline)
                         FloeSlider.volume(value: $volumeValue)
+                            .frame(maxWidth: .infinity)
                         Text("\(Int(volumeValue * 100))%")
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
+                    .frame(maxWidth: .infinity)
                 }
                 
                 // Large Custom Styled Slider
@@ -511,8 +520,8 @@ private struct InteractiveSliderPreview: View {
                         in: 0...100,
                         size: .large,
                         showLabels: .percentage,
-                        fillColor: Color.floePreviewAccent,
-                        thumbColor: Color.floePreviewAccent,
+                        fillColor: FloeColors.accent,
+                        thumbColor: FloeColors.accent,
                         thumbBorderColor: .white
                     )
                 }

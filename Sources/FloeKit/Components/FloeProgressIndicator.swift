@@ -80,8 +80,8 @@ public struct FloeProgressIndicator: View {
         progress: Double,
         style: Style = .linear,
         size: Size = .medium,
-        primaryColor: Color = Color.floePreviewPrimary,
-        backgroundColor: Color = Color.floePreviewSurface,
+        primaryColor: Color = FloeColors.primary,
+        backgroundColor: Color = FloeColors.neutral20,
         showPercentage: Bool = false,
         cornerRadius: CGFloat = 8,
         enableHaptics: Bool = true,
@@ -104,8 +104,8 @@ public struct FloeProgressIndicator: View {
         state: ProgressState,
         style: Style = .linear,
         size: Size = .medium,
-        primaryColor: Color = Color.floePreviewPrimary,
-        backgroundColor: Color = Color.floePreviewSurface,
+        primaryColor: Color = FloeColors.primary,
+        backgroundColor: Color = FloeColors.neutral20,
         showPercentage: Bool = false,
         centerContent: AnyView? = nil,
         cornerRadius: CGFloat = 8,
@@ -249,12 +249,12 @@ public struct FloeProgressIndicator: View {
         case .success:
             Image(systemName: "checkmark")
                 .font(size.font)
-                .foregroundColor(.green)
+                .foregroundColor(FloeColors.success)
                 .transition(.scale.combined(with: .opacity))
         case .error:
             Image(systemName: "xmark")
                 .font(size.font)
-                .foregroundColor(.red)
+                .foregroundColor(FloeColors.error)
                 .transition(.scale.combined(with: .opacity))
         default:
             EmptyView()
@@ -273,9 +273,9 @@ public struct FloeProgressIndicator: View {
     private var progressGradient: LinearGradient {
         switch state {
         case .success:
-            return LinearGradient(colors: [.green], startPoint: .leading, endPoint: .trailing)
+            return LinearGradient(colors: [FloeColors.success], startPoint: .leading, endPoint: .trailing)
         case .error:
-            return LinearGradient(colors: [.red], startPoint: .leading, endPoint: .trailing)
+            return LinearGradient(colors: [FloeColors.error], startPoint: .leading, endPoint: .trailing)
         case .loading, .indeterminate:
             return LinearGradient(
                 colors: [primaryColor.opacity(0.7), primaryColor, primaryColor.opacity(0.7)],
@@ -346,7 +346,7 @@ public extension FloeProgressIndicator {
     static func indeterminate(
         style: Style = .circular,
         size: Size = .medium,
-        color: Color = Color.floePreviewPrimary
+        color: Color = FloeColors.primary
     ) -> FloeProgressIndicator {
         return FloeProgressIndicator(
             state: .indeterminate,
@@ -384,7 +384,7 @@ public extension FloeProgressIndicator {
     static func loading(
         style: Style = .circular,
         size: Size = .medium,
-        color: Color = Color.floePreviewPrimary
+        color: Color = FloeColors.primary
     ) -> FloeProgressIndicator {
         return FloeProgressIndicator(
             state: .loading,
@@ -400,23 +400,25 @@ public extension FloeProgressIndicator {
 struct FloeProgressIndicator_Previews: PreviewProvider {
     static var previews: some View {
         Group {
+            // Dark mode preview (default)
             ScrollView {
                 VStack(spacing: FloeSpacing.Size.lg.value) {
                     PreviewWrapper()
                 }
                 .floePadding(.spacious)
             }
-            .previewDisplayName("Light Mode")
-            .environment(\.colorScheme, .light)
-            
-            ScrollView {
-                VStack(spacing: FloeSpacing.Size.lg.value) {
-                    PreviewWrapper()
-                }
-                .floePadding(.spacious)
-            }
+            .preferredColorScheme(.dark)
             .previewDisplayName("Dark Mode")
-            .environment(\.colorScheme, .dark)
+            
+            // Light mode preview
+            ScrollView {
+                VStack(spacing: FloeSpacing.Size.lg.value) {
+                    PreviewWrapper()
+                }
+                .floePadding(.spacious)
+            }
+            .preferredColorScheme(.light)
+            .previewDisplayName("Light Mode")
         }
         .previewLayout(.sizeThatFits)
     }
@@ -448,7 +450,7 @@ struct FloeProgressIndicator_Previews: PreviewProvider {
                     FloeProgressIndicator.indeterminate(
                         style: .linear,
                         size: .large,
-                        color: Color.floePreviewSecondary
+                        color: FloeColors.secondary
                     )
                 }
                 
@@ -474,7 +476,7 @@ struct FloeProgressIndicator_Previews: PreviewProvider {
                             FloeProgressIndicator.indeterminate(
                                 style: .circular,
                                 size: .medium,
-                                color: Color.floePreviewPrimary
+                                color: FloeColors.primary
                             )
                             Text("Indeterminate")
                                 .floeFont(.caption)

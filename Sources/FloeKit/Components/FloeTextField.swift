@@ -51,10 +51,10 @@ public struct FloeTextField: View {
         text: Binding<String>,
         placeholder: String,
         size: Size = .medium,
-        backgroundColor: Color = Color.floePreviewSurface,
+        backgroundColor: Color = FloeColors.surface,
         borderColor: Color? = nil,
         borderWidth: CGFloat = 1.0,
-        textColor: Color = Color.floePreviewPrimary,
+        textColor: Color = FloeColors.primary,
         cornerRadius: CGFloat = 14,
         leadingIcon: Image? = nil,
         trailingIcon: Image? = nil,
@@ -163,19 +163,21 @@ public struct FloeTextField: View {
 struct FloeTextField_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            VStack(spacing: 20) {
-                PreviewWrapper()
-            }
-            .padding()
-            .previewDisplayName("Light Mode")
-            .environment(\.colorScheme, .light)
-            
+            // Dark mode preview (default)
             VStack(spacing: 20) {
                 PreviewWrapper()
             }
             .padding()
             .previewDisplayName("Dark Mode")
-            .environment(\.colorScheme, .dark)
+            .preferredColorScheme(.dark)
+            
+            // Light mode preview
+            VStack(spacing: 20) {
+                PreviewWrapper()
+            }
+            .padding()
+            .previewDisplayName("Light Mode")
+            .preferredColorScheme(.light)
         }
         .previewLayout(.sizeThatFits)
     }

@@ -75,10 +75,10 @@ public struct FloeTextView: View {
         text: Binding<String>,
         placeholder: String = "Enter text...",
         size: Size = .medium,
-        backgroundColor: Color = Color.floePreviewSurface,
+        backgroundColor: Color = FloeColors.surface,
         borderColor: Color? = nil,
         borderWidth: CGFloat = 1.0,
-        textColor: Color = Color.floePreviewPrimary,
+        textColor: Color = FloeColors.primary,
         cornerRadius: CGFloat = 14,
         expansionStyle: ExpansionStyle = .none,
         characterLimit: Int? = nil,
@@ -108,7 +108,7 @@ public struct FloeTextView: View {
     public init(
         attributedText: AttributedString,
         size: Size = .medium,
-        backgroundColor: Color = Color.floePreviewSurface,
+        backgroundColor: Color = FloeColors.surface,
         borderColor: Color? = nil,
         borderWidth: CGFloat = 1.0,
         cornerRadius: CGFloat = 14,
@@ -424,7 +424,7 @@ public extension FloeTextView {
     static func readOnly(
         text: String,
         size: Size = .medium,
-        backgroundColor: Color = Color.floePreviewSurface,
+        backgroundColor: Color = FloeColors.surface,
         expansionStyle: ExpansionStyle = .readMore(previewLines: 3)
     ) -> FloeTextView {
         return FloeTextView(
@@ -440,7 +440,7 @@ public extension FloeTextView {
     static func attributedText(
         _ attributedText: AttributedString,
         size: Size = .medium,
-        backgroundColor: Color = Color.floePreviewSurface,
+        backgroundColor: Color = FloeColors.surface,
         expansionStyle: ExpansionStyle = .readMore(previewLines: 3)
     ) -> FloeTextView {
         return FloeTextView(
@@ -473,15 +473,7 @@ public extension FloeTextView {
 struct FloeTextView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ScrollView {
-                VStack(spacing: FloeSpacing.Size.lg.value) {
-                    PreviewWrapper()
-                }
-                .floePadding(.spacious)
-            }
-            .previewDisplayName("Light Mode")
-            .environment(\.colorScheme, .light)
-            
+            // Dark mode preview (default)
             ScrollView {
                 VStack(spacing: FloeSpacing.Size.lg.value) {
                     PreviewWrapper()
@@ -489,7 +481,17 @@ struct FloeTextView_Previews: PreviewProvider {
                 .floePadding(.spacious)
             }
             .previewDisplayName("Dark Mode")
-            .environment(\.colorScheme, .dark)
+            .preferredColorScheme(.dark)
+            
+            // Light mode preview
+            ScrollView {
+                VStack(spacing: FloeSpacing.Size.lg.value) {
+                    PreviewWrapper()
+                }
+                .floePadding(.spacious)
+            }
+            .previewDisplayName("Light Mode")
+            .preferredColorScheme(.light)
         }
         .previewLayout(.sizeThatFits)
     }
@@ -534,8 +536,8 @@ struct FloeTextView_Previews: PreviewProvider {
                     text: $bioText,
                     placeholder: "Tell us about yourself...",
                     size: .large,
-                    backgroundColor: Color.floePreviewBackground,
-                    borderColor: Color.floePreviewNeutral,
+                    backgroundColor: FloeColors.background,
+                    borderColor: FloeColors.neutral20,
                     showCharacterCount: true
                 )
             }

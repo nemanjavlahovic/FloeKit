@@ -117,7 +117,7 @@ public struct FloeTabBar: View {
             public let color: Color
             public let textColor: Color
             
-            public init(text: String, color: Color = .floePreviewError, textColor: Color = .white) {
+            public init(text: String, color: Color = FloeColors.error, textColor: Color = .white) {
                 self.text = text
                 self.color = color
                 self.textColor = textColor
@@ -166,9 +166,9 @@ public struct FloeTabBar: View {
             case .attached: return Color(UIColor.systemBackground)
             case .glassmorphism: return Color(UIColor.systemBackground).opacity(0.7)
             #else
-            case .floating: return Color.floePreviewBackground.opacity(0.95)
-            case .attached: return Color.floePreviewBackground
-            case .glassmorphism: return Color.floePreviewBackground.opacity(0.7)
+            case .floating: return FloeColors.background.opacity(0.95)
+            case .attached: return FloeColors.background
+            case .glassmorphism: return FloeColors.background.opacity(0.7)
             #endif
             case .minimal: return Color.clear
             }
@@ -473,7 +473,7 @@ private struct TabButtonView: View {
         ZStack {
             iconView
                 .font(.system(size: 20, weight: .medium))
-                .foregroundColor(isSelected ? Color.floePreviewPrimary : Color.floePreviewNeutral)
+                .foregroundColor(isSelected ? FloeColors.primary : FloeColors.neutral40)
             
             if let badge = tab.badge {
                 BadgeView(badge: badge)
@@ -498,7 +498,7 @@ private struct TabButtonView: View {
         Text(tab.title)
             .font(FloeFont.font(.caption))
             .fontWeight(isSelected ? .semibold : .medium)
-            .foregroundColor(isSelected ? Color.floePreviewPrimary : Color.floePreviewNeutral)
+            .foregroundColor(isSelected ? FloeColors.primary : FloeColors.neutral40)
             .opacity(isSelected ? 1.0 : 0.7)
             .lineLimit(1)
             .multilineTextAlignment(.center)
@@ -568,7 +568,7 @@ private struct TabIndicatorView: View {
         switch style {
         case .pill:
             RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(Color.floePreviewPrimary.opacity(0.12))
+                .fill(FloeColors.primary.opacity(0.12))
                 .matchedGeometryEffect(id: "tab_indicator", in: namespace)
                 .padding(.horizontal, -4)
                 .padding(.vertical, -2)
@@ -577,7 +577,7 @@ private struct TabIndicatorView: View {
             VStack {
                 Spacer()
                 Rectangle()
-                    .fill(Color.floePreviewPrimary)
+                    .fill(FloeColors.primary)
                     .frame(height: 3)
                     .cornerRadius(1.5)
                     .matchedGeometryEffect(id: "tab_indicator", in: namespace)
@@ -586,14 +586,14 @@ private struct TabIndicatorView: View {
             
         case .background:
             Rectangle()
-                .fill(Color.floePreviewPrimary.opacity(0.08))
+                .fill(FloeColors.primary.opacity(0.08))
                 .matchedGeometryEffect(id: "tab_indicator", in: namespace)
                 .padding(.horizontal, -6)
                 .padding(.vertical, -4)
                 
         case .floating:
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color.floePreviewPrimary.opacity(0.18))
+                .fill(FloeColors.primary.opacity(0.18))
                 .floeShadow(.subtle)
                 .matchedGeometryEffect(id: "tab_indicator", in: namespace)
                 .padding(.horizontal, -6)

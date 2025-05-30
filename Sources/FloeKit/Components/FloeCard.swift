@@ -10,7 +10,7 @@ public struct FloeCard<Content: View>: View {
     private let padding: EdgeInsets
     
     public init(
-        backgroundColor: Color = Color.floePreviewSurface,
+        backgroundColor: Color = FloeColors.surface,
         cornerRadius: CGFloat = 16,
         shadowStyle: FloeShadow.Style = .medium,
         borderColor: Color? = nil,
@@ -59,10 +59,10 @@ struct FloeCard_Previews: PreviewProvider {
                 }
                 
                 FloeCard(
-                    backgroundColor: colorScheme == .dark ? Color.blue.opacity(0.4) : Color.blue.opacity(0.1),
+                    backgroundColor: FloeColors.primary.opacity(0.1),
                     cornerRadius: 20,
                     shadowStyle: .elevated,
-                    borderColor: colorScheme == .dark ? Color.blue.opacity(0.6) : Color.blue.opacity(0.3)
+                    borderColor: FloeColors.primary
                 ) {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Custom Styled Card")
@@ -77,7 +77,7 @@ struct FloeCard_Previews: PreviewProvider {
                     VStack(alignment: .leading, spacing: 12) {
                         HStack {
                             Image(systemName: "star.fill")
-                                .foregroundColor(.yellow)
+                                .foregroundColor(FloeColors.accent)
                             Text("Featured Content")
                                 .font(.headline)
                         }
@@ -92,7 +92,7 @@ struct FloeCard_Previews: PreviewProvider {
                             Spacer()
                             
                             Image(systemName: "arrow.right")
-                                .foregroundColor(.blue)
+                                .foregroundColor(FloeColors.primary)
                         }
                     }
                 }
@@ -102,12 +102,15 @@ struct FloeCard_Previews: PreviewProvider {
     }
     static var previews: some View {
         Group {
+            // Dark mode preview (default)
             AdaptivePreview()
-                .previewDisplayName("Light Mode")
-                .environment(\.colorScheme, .light)
-            AdaptivePreview()
+                .preferredColorScheme(.dark)
                 .previewDisplayName("Dark Mode")
-                .environment(\.colorScheme, .dark)
+            
+            // Light mode preview
+            AdaptivePreview()
+                .preferredColorScheme(.light)
+                .previewDisplayName("Light Mode")
         }
         .previewLayout(.sizeThatFits)
     }
