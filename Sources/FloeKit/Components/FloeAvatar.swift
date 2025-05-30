@@ -50,10 +50,10 @@ public struct FloeAvatar: View {
         var color: Color {
             switch self {
             case .none: return .clear
-            case .online: return .green
-            case .offline: return .gray
-            case .away: return .yellow
-            case .busy: return .red
+            case .online: return FloeColors.success
+            case .offline: return FloeColors.neutral40
+            case .away: return FloeColors.warning
+            case .busy: return FloeColors.error
             case .custom(let color): return color
             }
         }
@@ -78,7 +78,7 @@ public struct FloeAvatar: View {
     public init(
         image: Image,
         size: Size = .medium,
-        backgroundColor: Color = Color.floePreviewSurface,
+        backgroundColor: Color = FloeColors.surface,
         foregroundColor: Color = Color.primary,
         borderColor: Color? = nil,
         borderWidth: CGFloat = 0,
@@ -101,7 +101,7 @@ public struct FloeAvatar: View {
     public init(
         systemImage: String,
         size: Size = .medium,
-        backgroundColor: Color = Color.floePreviewSurface,
+        backgroundColor: Color = FloeColors.surface,
         foregroundColor: Color = Color.primary,
         borderColor: Color? = nil,
         borderWidth: CGFloat = 0,
@@ -124,7 +124,7 @@ public struct FloeAvatar: View {
     public init(
         initials: String,
         size: Size = .medium,
-        backgroundColor: Color = Color.floePreviewPrimary,
+        backgroundColor: Color = FloeColors.primary,
         foregroundColor: Color = Color.white,
         borderColor: Color? = nil,
         borderWidth: CGFloat = 0,
@@ -146,7 +146,7 @@ public struct FloeAvatar: View {
     /// Initialize with placeholder
     public init(
         size: Size = .medium,
-        backgroundColor: Color = Color.floePreviewSurface,
+        backgroundColor: Color = FloeColors.surface,
         foregroundColor: Color = Color.secondary,
         borderColor: Color? = nil,
         borderWidth: CGFloat = 0,
@@ -249,7 +249,7 @@ public struct FloeAvatar: View {
             .frame(width: size.indicatorSize, height: size.indicatorSize)
             .overlay(
                 Circle()
-                    .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
+                    .strokeBorder(FloeColors.background, lineWidth: 2)
             )
             .offset(x: size.diameter * 0.3, y: size.diameter * 0.3)
     }
@@ -303,7 +303,7 @@ public struct FloeAvatarGroup: View {
                 FloeAvatar(
                     initials: "+\(avatars.count - maxVisible)",
                     size: size,
-                    backgroundColor: Color.floePreviewNeutral,
+                    backgroundColor: FloeColors.neutral30,
                     foregroundColor: Color.white
                 )
                 .zIndex(0)
@@ -339,7 +339,7 @@ public extension FloeAvatar {
     static func initials(
         _ text: String,
         size: Size = .medium,
-        backgroundColor: Color = Color.floePreviewPrimary,
+        backgroundColor: Color = FloeColors.primary,
         foregroundColor: Color = Color.white
     ) -> FloeAvatar {
         return FloeAvatar(
@@ -354,7 +354,7 @@ public extension FloeAvatar {
     static func icon(
         _ systemName: String,
         size: Size = .medium,
-        backgroundColor: Color = Color.floePreviewSurface,
+        backgroundColor: Color = FloeColors.surface,
         foregroundColor: Color = Color.primary
     ) -> FloeAvatar {
         return FloeAvatar(
@@ -390,23 +390,25 @@ public extension FloeAvatar {
 struct FloeAvatar_Previews: PreviewProvider {
     static var previews: some View {
         Group {
+            // Dark mode preview (default)
             ScrollView {
                 VStack(spacing: FloeSpacing.Size.lg.value) {
                     PreviewWrapper()
                 }
                 .floePadding(.spacious)
             }
-            .previewDisplayName("Light Mode")
-            .environment(\.colorScheme, .light)
-            
-            ScrollView {
-                VStack(spacing: FloeSpacing.Size.lg.value) {
-                    PreviewWrapper()
-                }
-                .floePadding(.spacious)
-            }
+            .preferredColorScheme(.dark)
             .previewDisplayName("Dark Mode")
-            .environment(\.colorScheme, .dark)
+            
+            // Light mode preview
+            ScrollView {
+                VStack(spacing: FloeSpacing.Size.lg.value) {
+                    PreviewWrapper()
+                }
+                .floePadding(.spacious)
+            }
+            .preferredColorScheme(.light)
+            .previewDisplayName("Light Mode")
         }
         .previewLayout(.sizeThatFits)
     }
@@ -426,7 +428,7 @@ struct FloeAvatar_Previews: PreviewProvider {
                         FloeAvatar.placeholder()
                         FloeAvatar(
                             systemImage: "star.fill",
-                            backgroundColor: Color.floePreviewAccent,
+                            backgroundColor: FloeColors.accent,
                             foregroundColor: .white
                         )
                     }
@@ -487,8 +489,8 @@ struct FloeAvatar_Previews: PreviewProvider {
                         FloeAvatar(
                             initials: "BR",
                             backgroundColor: .clear,
-                            foregroundColor: Color.floePreviewPrimary,
-                            borderColor: Color.floePreviewPrimary,
+                            foregroundColor: FloeColors.primary,
+                            borderColor: FloeColors.primary,
                             borderWidth: 2
                         )
                         
@@ -502,8 +504,8 @@ struct FloeAvatar_Previews: PreviewProvider {
                         FloeAvatar(
                             initials: "VIP",
                             backgroundColor: Color.black,
-                            foregroundColor: Color.floePreviewAccent,
-                            borderColor: Color.floePreviewAccent,
+                            foregroundColor: FloeColors.accent,
+                            borderColor: FloeColors.accent,
                             borderWidth: 2
                         )
                     }
@@ -519,9 +521,9 @@ struct FloeAvatar_Previews: PreviewProvider {
                         // Stacked avatars
                         FloeAvatarGroup(
                             avatars: [
-                                FloeAvatar.initials("A", backgroundColor: .red),
-                                FloeAvatar.initials("B", backgroundColor: .blue),
-                                FloeAvatar.initials("C", backgroundColor: .green),
+                                FloeAvatar.initials("A", backgroundColor: FloeColors.error),
+                                FloeAvatar.initials("B", backgroundColor: FloeColors.primary),
+                                FloeAvatar.initials("C", backgroundColor: FloeColors.success),
                                 FloeAvatar.initials("D", backgroundColor: .purple),
                                 FloeAvatar.initials("E", backgroundColor: .orange),
                                 FloeAvatar.initials("F", backgroundColor: .pink)
@@ -555,7 +557,7 @@ struct FloeAvatar_Previews: PreviewProvider {
                     HStack(spacing: FloeSpacing.Size.lg.value) {
                         FloeAvatar(
                             initials: "TAP",
-                            backgroundColor: Color.floePreviewSecondary,
+                            backgroundColor: FloeColors.secondary,
                             foregroundColor: .white
                         ) {
                             print("Avatar tapped!")
@@ -563,9 +565,9 @@ struct FloeAvatar_Previews: PreviewProvider {
                         
                         FloeAvatar(
                             systemImage: "plus",
-                            backgroundColor: Color.floePreviewSurface,
-                            foregroundColor: Color.floePreviewPrimary,
-                            borderColor: Color.floePreviewPrimary,
+                            backgroundColor: FloeColors.surface,
+                            foregroundColor: FloeColors.primary,
+                            borderColor: FloeColors.primary,
                             borderWidth: 2
                         ) {
                             print("Add avatar tapped!")
