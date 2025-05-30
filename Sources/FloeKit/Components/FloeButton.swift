@@ -47,10 +47,10 @@ public struct FloeButton: View {
     public init(_ title: String, 
                 size: Size = .medium, 
                 isEnabled: Bool = true,
-                backgroundColor: Color = Color.floePreviewSurface,
+                backgroundColor: Color = FloeColors.primary,
                 borderColor: Color? = nil,
                 borderWidth: CGFloat = 1.0,
-                textColor: Color = Color.floePreviewPrimary,
+                textColor: Color = Color.white,
                 cornerRadius: CGFloat = 14,
                 icon: Image? = nil,
                 isLoading: Bool = false,
@@ -87,7 +87,7 @@ public struct FloeButton: View {
                 Text(title)
                     .font(size.font)
             }
-            .foregroundColor(isEnabled ? textColor : .gray)
+            .foregroundColor(isEnabled ? textColor : FloeColors.neutral40)
             .padding(size.padding)
             .frame(maxWidth: .infinity)
             .background(
@@ -125,59 +125,67 @@ public struct FloeButton: View {
 struct FloeButton_Previews: PreviewProvider {
     static var previews: some View {
         Group {
+            // Dark mode preview (default)
             VStack(spacing: 20) {
-                FloeButton("Default Button", size: .small, backgroundColor: Color.floePreviewPrimary, textColor: .white) {}
+                FloeButton("Default Button", 
+                          size: .small, 
+                          backgroundColor: FloeColors.primary, 
+                          textColor: .white) {}
                 
                 FloeButton("With Icon", 
                           size: .medium,
-                          backgroundColor: Color.floePreviewSecondary,
+                          backgroundColor: FloeColors.secondary,
                           textColor: .white,
                           icon: Image(systemName: "star.fill")) {}
                 
                 FloeButton("Loading State",
                           size: .large,
-                          backgroundColor: Color.floePreviewSurface,
-                          borderColor: Color.floePreviewPrimary.opacity(0.3),
-                          textColor: Color.floePreviewPrimary,
+                          backgroundColor: FloeColors.surface,
+                          borderColor: FloeColors.primary,
+                          textColor: FloeColors.primary,
                           isLoading: true) {}
                 
                 FloeButton("Custom Style",
                           size: .medium,
-                          backgroundColor: Color.floePreviewAccent,
+                          backgroundColor: FloeColors.accent,
                           textColor: .white,
                           cornerRadius: 12,
                           icon: Image(systemName: "plus.circle.fill")) {}
             }
             .padding()
-            .previewDisplayName("Light Mode")
-            .environment(\.colorScheme, .light)
-            
-            VStack(spacing: 20) {
-                FloeButton("Default Button", size: .small, backgroundColor: Color.floePreviewPrimary, textColor: .white) {}
-                
-                FloeButton("With Icon", 
-                          size: .medium,
-                          backgroundColor: Color.floePreviewSecondary,
-                          textColor: .white,
-                          icon: Image(systemName: "star.fill")) {}
-                
-                FloeButton("Loading State",
-                          size: .large,
-                          backgroundColor: Color.floePreviewSurface,
-                          borderColor: Color.floePreviewPrimary.opacity(0.3),
-                          textColor: Color.floePreviewPrimary,
-                          isLoading: true) {}
-                
-                FloeButton("Custom Style",
-                          size: .medium,
-                          backgroundColor: Color.floePreviewAccent,
-                          textColor: .white,
-                          cornerRadius: 12,
-                          icon: Image(systemName: "plus.circle.fill")) {}
-            }
-            .padding()
+            .preferredColorScheme(.dark)
             .previewDisplayName("Dark Mode")
-            .environment(\.colorScheme, .dark)
+            
+            // Light mode preview
+            VStack(spacing: 20) {
+                FloeButton("Default Button", 
+                          size: .small, 
+                          backgroundColor: FloeColors.primary, 
+                          textColor: .white) {}
+                
+                FloeButton("With Icon", 
+                          size: .medium,
+                          backgroundColor: FloeColors.secondary,
+                          textColor: .white,
+                          icon: Image(systemName: "star.fill")) {}
+                
+                FloeButton("Loading State",
+                          size: .large,
+                          backgroundColor: FloeColors.surface,
+                          borderColor: FloeColors.primary,
+                          textColor: FloeColors.primary,
+                          isLoading: true) {}
+                
+                FloeButton("Custom Style",
+                          size: .medium,
+                          backgroundColor: FloeColors.accent,
+                          textColor: .white,
+                          cornerRadius: 12,
+                          icon: Image(systemName: "plus.circle.fill")) {}
+            }
+            .padding()
+            .preferredColorScheme(.light)
+            .previewDisplayName("Light Mode")
         }
         .previewLayout(.sizeThatFits)
     }
