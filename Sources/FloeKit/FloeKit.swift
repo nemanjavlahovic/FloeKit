@@ -16,7 +16,7 @@ public struct FloeKit {
 
 // This file serves as the main entry point and ensures the module compiles correctly.
 // Components available after importing FloeKit:
-// - FloeButton, FloeTextField, FloeCard, FloeAvatar, FloeToggle
+// - FloeButton, FloeTextField, FloeCard, FloeAvatar
 // - FloeToast, FloeTabBar, FloeSlider, FloeTextView, FloeProgressIndicator
 // - FloeColors, FloeFont, FloeSpacing, FloeShadow utilities
 // - View+FloeModifiers, Color+FloeExtensions (Extension utilities) 
