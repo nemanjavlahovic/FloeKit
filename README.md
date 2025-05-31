@@ -24,6 +24,8 @@ Inspired by floating ice sheets, **FloeKit** provides calm, elegant, and modular
   - [FloeSlider](#floeslider-new)
   - [FloeTextView](#floetextview-new)
   - [FloeProgressIndicator](#floeprogressindicator-new)
+  - [FloeSearchBar](#floesearchbar-new)
+  - [FloeSkeleton](#floeskeleton-new)
 - [🏗️ Comprehensive Example](#️-comprehensive-example)
 - [🛠️ Utilities](#️-utilities)
   - [FloeColors](#floecolors)
@@ -516,6 +518,106 @@ FloeProgressIndicator(
 **States:** Determinate, indeterminate, loading, success, error  
 **Sizes:** `.small`, `.medium`, `.large`  
 **Features:** Smooth animations, custom colors, percentage display, accessibility
+
+---
+
+### FloeSearchBar *(New)*
+Enhanced search bar with modern styling and functionality.
+
+```swift
+@State private var searchText = ""
+
+// Basic search bar
+FloeSearchBar(
+    text: $searchText,
+    placeholder: "Search...",
+    onSearchSubmit: { query in
+        print("Searching for: \(query)")
+    }
+)
+
+// Search bar with voice input
+FloeSearchBar.withVoiceSearch(
+    text: $searchText,
+    placeholder: "Search with voice...",
+    onVoiceSearch: { activateVoiceSearch() }
+)
+
+// Search bar with filter
+FloeSearchBar.withFilter(
+    text: $searchText,
+    placeholder: "Search and filter...",
+    onFilter: { showFilterOptions() }
+)
+
+// Search bar with cancel button
+FloeSearchBar.withCancelButton(
+    text: $searchText,
+    placeholder: "Search...",
+    onCancel: { clearSearch() }
+)
+```
+
+**Features:** Auto-clear button, focus states, voice search support, filter integration, cancel button, custom styling, accessibility support
+
+---
+
+### FloeSkeleton *(New)*
+Skeleton loading components for beautiful placeholder UI while content loads.
+
+```swift
+// Basic skeleton shapes
+FloeSkeleton.avatar(size: 40)
+FloeSkeleton.text(lines: 3)
+FloeSkeleton.button(width: 100, height: 40)
+
+// Post skeleton with automatic layout
+FloeSkeleton.post()
+
+// Multiple loading items
+FloeSkeletonLoading(count: 3) {
+    FloeSkeleton.listItem()
+}
+
+// Custom skeleton with different animations
+FloeSkeleton(
+    style: .rectangle(width: 200, height: 40),
+    animationType: .shimmer,
+    cornerRadius: 8
+)
+
+// NEW: Skeleton View Modifiers - Apply to any view!
+@State private var isLoading = true
+
+// Apply skeleton to any view
+MyComplexCard()
+    .floeSkeleton($isLoading)
+
+// Skeleton for text content
+Text("User Name")
+    .floeTextSkeleton($isLoading)
+
+Text("Multi-line content here")
+    .floeTextSkeleton($isLoading, lines: 2, lastLineWidth: 0.6)
+
+// Skeleton for buttons
+FloeButton("Save") { }
+    .floeSkeleton($isLoading, cornerRadius: 16)
+
+// Skeleton for avatars
+FloeAvatar.initials("JD")
+    .floeSkeleton($isLoading, cornerRadius: 25)
+
+// Custom animation types
+AnyView()
+    .floeSkeleton($isLoading, animationType: .pulse)
+    .floeSkeleton($isLoading, animationType: .wave)
+    .floeSkeleton($isLoading, animationType: .shimmer)
+```
+
+**Styles:** Text, circle, rectangle, card, custom  
+**Animations:** Shimmer, pulse, wave, none  
+**Features:** Multiple animation types, customizable colors, automatic staggered loading, convenience methods for common use cases, **view modifiers for any SwiftUI view**
 
 ---
 

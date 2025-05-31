@@ -18,6 +18,6 @@ public struct FloeKit {
 // Components available after importing FloeKit:
 // - FloeButton, FloeTextField, FloeCard, FloeAvatar
 // - FloeToast, FloeTabBar, FloeSlider, FloeTextView, FloeProgressIndicator
-// - FloeSearchBar
+// - FloeSearchBar, FloeSkeleton
 // - FloeColors, FloeFont, FloeSpacing, FloeShadow utilities
 // - View+FloeModifiers, Color+FloeExtensions (Extension utilities) 

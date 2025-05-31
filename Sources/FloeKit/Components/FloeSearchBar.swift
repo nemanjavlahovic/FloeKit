@@ -118,7 +118,6 @@ public struct FloeSearchBar: View {
             
             // Search TextField
             TextField(placeholder, text: $text)
-                .textFieldStyle(.plain)
                 .font(size.font)
                 .foregroundColor(textColor)
                 .focused($isFocused)
@@ -151,7 +150,7 @@ public struct FloeSearchBar: View {
         .background(
             RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                 .fill(backgroundColor)
-                .floeShadow(.medium)
+                .floeShadow(.soft)
         )
         .overlay(
             Group {
@@ -163,17 +162,14 @@ public struct FloeSearchBar: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                .stroke(isFocused ? Color.accentColor : .clear, lineWidth: 2)
+                .strokeBorder(isFocused ? FloeColors.primary : .clear, lineWidth: 2)
         )
-        .scaleEffect(isPressed ? 0.98 : 1.0)
+        .contentShape(Rectangle())
         .onTapGesture {
-            isFocused = true
+            if !isFocused {
+                isFocused = true
+            }
         }
-        .highPriorityGesture(
-            DragGesture(minimumDistance: 0)
-                .onChanged { _ in isPressed = true }
-                .onEnded { _ in isPressed = false }
-        )
     }
     
     @ViewBuilder
@@ -185,7 +181,7 @@ public struct FloeSearchBar: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: size.iconSize, height: size.iconSize)
-                    .foregroundColor(isFocused ? .accentColor : FloeColors.neutral40)
+                    .foregroundColor(isFocused ? FloeColors.primary : FloeColors.neutral40)
                     .accessibilityHidden(true)
                     
             case .button(let image, let action):
@@ -194,7 +190,7 @@ public struct FloeSearchBar: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: size.iconSize, height: size.iconSize)
-                        .foregroundColor(isFocused ? .accentColor : FloeColors.neutral40)
+                        .foregroundColor(isFocused ? FloeColors.primary : FloeColors.neutral40)
                 }
                 .accessibilityLabel("Search action")
             }
@@ -210,7 +206,7 @@ public struct FloeSearchBar: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: size.iconSize, height: size.iconSize)
-                    .foregroundColor(isFocused ? .accentColor : FloeColors.neutral40)
+                    .foregroundColor(isFocused ? FloeColors.primary : FloeColors.neutral40)
                     .accessibilityHidden(true)
                     
             case .button(let image, let action):
@@ -219,7 +215,7 @@ public struct FloeSearchBar: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: size.iconSize, height: size.iconSize)
-                        .foregroundColor(isFocused ? .accentColor : FloeColors.neutral40)
+                        .foregroundColor(isFocused ? FloeColors.primary : FloeColors.neutral40)
                 }
                 .accessibilityLabel("Additional action")
                 
@@ -229,7 +225,7 @@ public struct FloeSearchBar: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: size.iconSize, height: size.iconSize)
-                        .foregroundColor(isFocused ? .accentColor : FloeColors.neutral40)
+                        .foregroundColor(isFocused ? FloeColors.primary : FloeColors.neutral40)
                 }
                 .accessibilityLabel("Voice search")
                 .accessibilityHint("Activate voice search")
@@ -240,7 +236,7 @@ public struct FloeSearchBar: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: size.iconSize, height: size.iconSize)
-                        .foregroundColor(isFocused ? .accentColor : FloeColors.neutral40)
+                        .foregroundColor(isFocused ? FloeColors.primary : FloeColors.neutral40)
                 }
                 .accessibilityLabel("Filter options")
                 .accessibilityHint("Show filter options")
@@ -328,66 +324,95 @@ struct FloeSearchBar_Previews: PreviewProvider {
     
     struct PreviewWrapper: View {
         @State private var basicSearch = ""
-        @State private var voiceSearch = "Voice search example"
+        @State private var voiceSearch = ""
         @State private var filterSearch = ""
         @State private var cancelSearch = ""
-        @State private var customSearch = "Custom styling"
+        @State private var customSearch = ""
         
         var body: some View {
             VStack(spacing: 20) {
+                Text("FloeSearchBar Examples")
+                    .font(.headline)
+                    .padding()
+                
                 // Basic search bar
-                FloeSearchBar(
-                    text: $basicSearch,
-                    placeholder: "Search products..."
-                )
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Basic Search")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    FloeSearchBar(
+                        text: $basicSearch,
+                        placeholder: "Search products..."
+                    )
+                }
                 
                 // Search bar with voice search
-                FloeSearchBar.withVoiceSearch(
-                    text: $voiceSearch,
-                    placeholder: "Search with voice...",
-                    onVoiceSearch: {
-                        print("Voice search activated")
-                    },
-                    onSearchSubmit: { query in
-                        print("Searching for: \(query)")
-                    }
-                )
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("With Voice Search")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    FloeSearchBar.withVoiceSearch(
+                        text: $voiceSearch,
+                        placeholder: "Search with voice...",
+                        onVoiceSearch: {
+                            print("Voice search activated")
+                        },
+                        onSearchSubmit: { query in
+                            print("Searching for: \(query)")
+                        }
+                    )
+                }
                 
                 // Search bar with filter
-                FloeSearchBar.withFilter(
-                    text: $filterSearch,
-                    placeholder: "Search and filter...",
-                    onFilter: {
-                        print("Filter activated")
-                    }
-                )
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("With Filter")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    FloeSearchBar.withFilter(
+                        text: $filterSearch,
+                        placeholder: "Search and filter...",
+                        onFilter: {
+                            print("Filter activated")
+                        }
+                    )
+                }
                 
                 // Search bar with cancel button
-                FloeSearchBar.withCancelButton(
-                    text: $cancelSearch,
-                    placeholder: "Search with cancel...",
-                    onCancel: {
-                        print("Search cancelled")
-                    }
-                )
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("With Cancel Button")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    FloeSearchBar.withCancelButton(
+                        text: $cancelSearch,
+                        placeholder: "Search with cancel...",
+                        onCancel: {
+                            print("Search cancelled")
+                        }
+                    )
+                }
                 
                 // Custom styled search bar
-                FloeSearchBar(
-                    text: $customSearch,
-                    placeholder: "Custom search...",
-                    size: .large,
-                    backgroundColor: FloeColors.accent.opacity(0.1),
-                    borderColor: FloeColors.accent,
-                    borderWidth: 2,
-                    textColor: FloeColors.primary,
-                    cornerRadius: 20,
-                    leadingElement: .button(Image(systemName: "magnifyingglass.circle.fill")) {
-                        print("Custom search button tapped")
-                    },
-                    trailingElement: .button(Image(systemName: "qrcode.viewfinder")) {
-                        print("QR code scanner activated")
-                    }
-                )
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Custom Styling")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    FloeSearchBar(
+                        text: $customSearch,
+                        placeholder: "Custom search...",
+                        size: .large,
+                        backgroundColor: FloeColors.accent.opacity(0.1),
+                        borderColor: FloeColors.accent,
+                        borderWidth: 2,
+                        textColor: FloeColors.primary,
+                        cornerRadius: 20,
+                        leadingElement: .button(Image(systemName: "magnifyingglass.circle.fill")) {
+                            print("Custom search button tapped")
+                        },
+                        trailingElement: .button(Image(systemName: "qrcode.viewfinder")) {
+                            print("QR code scanner activated")
+                        }
+                    )
+                }
             }
         }
     }

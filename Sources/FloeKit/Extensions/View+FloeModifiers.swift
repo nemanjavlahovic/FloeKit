@@ -105,4 +105,220 @@ public extension View {
     func floeEaseAnimation(duration: Double = 0.25) -> some View {
         self.animation(.easeInOut(duration: duration), value: UUID())
     }
+    
+    // MARK: - Skeleton Loading
+    /// Applies skeleton loading overlay to any view
+    /// - Parameters:
+    ///   - isLoading: Whether skeleton loading should be shown
+    ///   - animationType: The type of skeleton animation
+    ///   - cornerRadius: Corner radius for skeleton shapes
+    ///   - backgroundColor: Background color for skeleton elements
+    ///   - highlightColor: Highlight color for animations
+    /// - Returns: A view with conditional skeleton loading overlay
+    func floeSkeleton(
+        _ isLoading: Bool,
+        animationType: FloeSkeleton.AnimationType = .shimmer,
+        cornerRadius: CGFloat = 8,
+        backgroundColor: Color = FloeColors.neutral20,
+        highlightColor: Color = FloeColors.neutral10
+    ) -> some View {
+        self.overlay(
+            Group {
+                if isLoading {
+                    FloeSkeletonOverlay(
+                        animationType: animationType,
+                        cornerRadius: cornerRadius,
+                        backgroundColor: backgroundColor,
+                        highlightColor: highlightColor
+                    )
+                }
+            }
+        )
+        .disabled(isLoading)
+    }
+    
+    /// Applies skeleton loading with binding
+    /// - Parameters:
+    ///   - isLoading: Binding to loading state
+    ///   - animationType: The type of skeleton animation
+    ///   - cornerRadius: Corner radius for skeleton shapes
+    ///   - backgroundColor: Background color for skeleton elements
+    ///   - highlightColor: Highlight color for animations
+    /// - Returns: A view with conditional skeleton loading overlay
+    func floeSkeleton(
+        _ isLoading: Binding<Bool>,
+        animationType: FloeSkeleton.AnimationType = .shimmer,
+        cornerRadius: CGFloat = 8,
+        backgroundColor: Color = FloeColors.neutral20,
+        highlightColor: Color = FloeColors.neutral10
+    ) -> some View {
+        self.floeSkeleton(
+            isLoading.wrappedValue,
+            animationType: animationType,
+            cornerRadius: cornerRadius,
+            backgroundColor: backgroundColor,
+            highlightColor: highlightColor
+        )
+    }
+}
+
+// MARK: - Skeleton Overlay Component
+
+private struct FloeSkeletonOverlay: View {
+    let animationType: FloeSkeleton.AnimationType
+    let cornerRadius: CGFloat
+    let backgroundColor: Color
+    let highlightColor: Color
+    
+    @State private var shimmerOffset: CGFloat = -1
+    @State private var animationPhase: Double = 0
+    
+    var body: some View {
+        GeometryReader { geometry in
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .fill(backgroundColor)
+                .overlay(
+                    Group {
+                        switch animationType {
+                        case .shimmer:
+                            shimmerOverlay(in: geometry)
+                        case .pulse:
+                            pulseOverlay
+                        case .wave:
+                            waveOverlay
+                        case .none:
+                            EmptyView()
+                        }
+                    }
+                )
+                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+        }
+        .onAppear {
+            startAnimation()
+        }
+    }
+    
+    private func shimmerOverlay(in geometry: GeometryProxy) -> some View {
+        RoundedRectangle(cornerRadius: cornerRadius)
+            .fill(
+                LinearGradient(
+                    gradient: Gradient(stops: [
+                        .init(color: backgroundColor.opacity(0), location: 0),
+                        .init(color: highlightColor.opacity(0.6), location: 0.5),
+                        .init(color: backgroundColor.opacity(0), location: 1)
+                    ]),
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .frame(width: geometry.size.width)
+            .offset(x: shimmerOffset * geometry.size.width * 2)
+    }
+    
+    private var pulseOverlay: some View {
+        RoundedRectangle(cornerRadius: cornerRadius)
+            .fill(highlightColor)
+            .opacity(0.3 + 0.3 * sin(animationPhase * .pi * 2))
+    }
+    
+    private var waveOverlay: some View {
+        RoundedRectangle(cornerRadius: cornerRadius)
+            .fill(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        backgroundColor,
+                        highlightColor,
+                        backgroundColor
+                    ]),
+                    startPoint: UnitPoint(x: animationPhase - 0.3, y: 0),
+                    endPoint: UnitPoint(x: animationPhase + 0.3, y: 1)
+                )
+            )
+    }
+    
+    private func startAnimation() {
+        switch animationType {
+        case .shimmer:
+            withAnimation(
+                .linear(duration: 1.5)
+                .repeatForever(autoreverses: false)
+            ) {
+                shimmerOffset = 1
+            }
+        case .pulse, .wave:
+            withAnimation(
+                .easeInOut(duration: animationType.duration)
+                .repeatForever(autoreverses: true)
+            ) {
+                animationPhase = 1.0
+            }
+        case .none:
+            break
+        }
+    }
+}
+
+// MARK: - Text Skeleton Modifier
+
+public extension View {
+    /// Applies skeleton loading specifically designed for text content
+    /// - Parameters:
+    ///   - isLoading: Whether skeleton loading should be shown
+    ///   - lines: Number of text lines to simulate
+    ///   - lastLineWidth: Width of the last line as a fraction (0.0 - 1.0)
+    ///   - animationType: The type of skeleton animation
+    /// - Returns: A view with conditional text skeleton loading
+    func floeTextSkeleton(
+        _ isLoading: Bool,
+        lines: Int = 1,
+        lastLineWidth: CGFloat = 0.6,
+        animationType: FloeSkeleton.AnimationType = .shimmer
+    ) -> some View {
+        self.overlay(
+            Group {
+                if isLoading {
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(0..<lines, id: \.self) { index in
+                            let isLastLine = index == lines - 1
+                            let width = isLastLine ? lastLineWidth : 1.0
+                            
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(FloeColors.neutral20)
+                                .frame(height: 16)
+                                .frame(maxWidth: .infinity)
+                                .scaleEffect(x: width, anchor: .leading)
+                                .modifier(SkeletonAnimationModifier(
+                                    animationType: animationType,
+                                    backgroundColor: FloeColors.neutral20,
+                                    highlightColor: FloeColors.neutral10,
+                                    isAnimated: true
+                                ))
+                        }
+                    }
+                }
+            }
+        )
+        .disabled(isLoading)
+    }
+    
+    /// Applies skeleton loading specifically designed for text content with binding
+    /// - Parameters:
+    ///   - isLoading: Binding to loading state
+    ///   - lines: Number of text lines to simulate
+    ///   - lastLineWidth: Width of the last line as a fraction (0.0 - 1.0)
+    ///   - animationType: The type of skeleton animation
+    /// - Returns: A view with conditional text skeleton loading
+    func floeTextSkeleton(
+        _ isLoading: Binding<Bool>,
+        lines: Int = 1,
+        lastLineWidth: CGFloat = 0.6,
+        animationType: FloeSkeleton.AnimationType = .shimmer
+    ) -> some View {
+        self.floeTextSkeleton(
+            isLoading.wrappedValue,
+            lines: lines,
+            lastLineWidth: lastLineWidth,
+            animationType: animationType
+        )
+    }
 } 
