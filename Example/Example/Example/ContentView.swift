@@ -157,18 +157,15 @@ struct ContentView: View {
                 // Loading state
                 if isLoadingFeed {
                     VStack(spacing: FloeSpacing.Size.lg.value) {
-                        // Traditional skeleton approach
-                        FloeSkeletonLoading(count: 1, spacing: FloeSpacing.Size.lg.value) {
-                            FloeSkeleton.post()
-                        }
-                        .padding(.horizontal, FloeSpacing.Size.lg.value)
+                        FloeProgressIndicator.indeterminate(style: .circular, size: .large)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 40)
                         
-                        // NEW: Modifier approach - skeleton applied to actual content
-                        Text("This demonstrates the new .floeSkeleton() modifier approach")
+                        Text("Loading posts...")
                             .font(.caption)
                             .foregroundColor(.secondary)
-                            .padding(.horizontal, FloeSpacing.Size.lg.value)
                     }
+                    .padding(.horizontal, FloeSpacing.Size.lg.value)
                 } else {
                     // Posts
                     ForEach(posts) { post in
