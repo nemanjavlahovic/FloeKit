@@ -192,7 +192,7 @@ public struct FloeTextView: View {
                         .focused($isFocused)
                         .background(Color.clear)
                         .onAppear {
-                            #if canImport(UIKit)
+                            #if canImport(UIKit) && !os(macOS)
                             UITextView.appearance().backgroundColor = .clear
                             #endif
                         }

@@ -162,14 +162,14 @@ public struct FloeProgressIndicator: View {
                 
                 // Progress fill
                 if case .indeterminate = state {
-                    // Indeterminate shimmer animation
+                    // Indeterminate/Loading shimmer animation
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                         .fill(progressGradient)
                         .frame(width: geometry.size.width * 0.3)
                         .offset(x: (geometry.size.width * 0.7) * animationProgress)
                         .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: animationProgress)
                 } else if case .loading = state {
-                    // Loading shimmer animation
+                    // Indeterminate/Loading shimmer animation
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                         .fill(progressGradient)
                         .frame(width: geometry.size.width * 0.3)
@@ -202,14 +202,14 @@ public struct FloeProgressIndicator: View {
             
             // Progress circle
             if case .indeterminate = state {
-                // Indeterminate spinning animation
+                // Indeterminate/Loading spinning animation
                 Circle()
                     .trim(from: 0, to: 0.75)
                     .stroke(progressGradient, style: StrokeStyle(lineWidth: size.lineWidth, lineCap: .round))
                     .rotationEffect(.degrees(rotationAngle))
                     .animation(.linear(duration: 1.0).repeatForever(autoreverses: false), value: rotationAngle)
             } else if case .loading = state {
-                // Loading spinning animation
+                // Indeterminate/Loading spinning animation
                 Circle()
                     .trim(from: 0, to: 0.75)
                     .stroke(progressGradient, style: StrokeStyle(lineWidth: size.lineWidth, lineCap: .round))

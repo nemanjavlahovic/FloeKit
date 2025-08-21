@@ -19,20 +19,22 @@ Inspired by floating ice sheets, **FloeKit** provides calm, elegant, and modular
   - [FloeTextField](#floetextfield)
   - [FloeCard](#floecard)
   - [FloeAvatar](#floeavatar)
-  - [FloeToast](#floetoast-new)
-  - [FloeTabBar](#floetabbar-new)
-  - [FloeSlider](#floeslider-new)
-  - [FloeTextView](#floetextview-new)
-  - [FloeProgressIndicator](#floeprogressindicator-new)
-  - [FloeSearchBar](#floesearchbar-new)
-  - [FloeSkeleton](#floeskeleton-new)
+  - [FloeToast](#floetoast)
+  - [FloeTabBar](#floetabbar)
+  - [FloeSlider](#floeslider)
+  - [FloeTextView](#floetextview)
+  - [FloeProgressIndicator](#floeprogressindicator)
+  - [FloeSearchBar](#floesearchbar)
+  - [FloeSkeleton](#floeskeleton)
+  - [FloeSegmentedControl](#floesegmentedcontrol)
+  - [FloeEmptyState](#floeemptystate)
+  - [FloeBadge](#floebadge)
 - [🏗️ Comprehensive Example](#️-comprehensive-example)
 - [🛠️ Utilities](#️-utilities)
   - [FloeColors](#floecolors)
   - [FloeFont](#floefont)
   - [FloeSpacing](#floespacing)
   - [FloeShadow](#floeshadow)
-- [🗺️ Roadmap](#️-roadmap)
 - [🎨 Theming](#-theming)
 - [📄 License](#-license)
 - [🙏 Acknowledgments](#-acknowledgments)
@@ -69,7 +71,7 @@ Or add to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/nemanjavlahovic/FloeKit", from: "0.3.0")
+    .package(url: "https://github.com/nemanjavlahovic/FloeKit", from: "0.4.0")
 ]
 ```
 
@@ -78,36 +80,50 @@ dependencies: [
 ## 🧱 Components
 
 ### FloeButton
-Soft, elevated buttons with multiple sizes, loading states, and icon support.
+Advanced buttons with multiple styles, haptic feedback, and group support.
 
 ![FloeButton Examples](Documentation/Screenshots/floe_button_ss.png)
 
 ```swift
 import FloeKit
 
-// Basic button
-FloeButton("Get Started") {
-    // Action
-}
+// Style presets
+FloeButton.primary("Get Started") { }
+FloeButton.secondary("Learn More") { }
+FloeButton.ghost("Cancel") { }
+FloeButton.danger("Delete") { }
+FloeButton.success("Confirm") { }
+FloeButton.floating("Add", icon: Image(systemName: "plus")) { }
 
-// Button with icon and custom styling
-// Note: Parameters can be specified in any order using named parameters
+// Custom styling with haptics
 FloeButton("Save", 
+          style: .primary,
           size: .large,
-          backgroundColor: .blue,
-          textColor: .white,
+          hapticStyle: .medium,
           icon: Image(systemName: "checkmark")) {
     // Save action
 }
 
-// Loading state
-FloeButton("Processing...", isLoading: true) {
-    // Action
+// Button groups
+FloeButtonGroup {
+    FloeButton.ghost("Cancel") { }
+    FloeButton.primary("Save") { }
 }
+
+// Vertical button group
+FloeButtonGroup(orientation: .vertical) {
+    FloeButton.primary("Option 1") { }
+    FloeButton.secondary("Option 2") { }
+}
+
+// Loading state
+FloeButton("Processing...", isLoading: true) { }
 ```
 
+**Styles:** `.primary`, `.secondary`, `.ghost`, `.danger`, `.success`, `.floating`  
 **Sizes:** `.small`, `.medium`, `.large`  
-**Features:** Loading states, icons, custom colors, accessibility support
+**Haptics:** `.light`, `.medium`, `.heavy`, `.selection`  
+**Features:** Loading states, icons, custom colors, haptic feedback, button groups, accessibility support
 
 ---
 
@@ -153,29 +169,64 @@ FloeTextField(
 ---
 
 ### FloeCard
-Clean, elevated containers with consistent shadows and padding.
+Interactive containers with selection states, swipe actions, and tap handling.
 
 ![FloeCard Examples](Documentation/Screenshots/floe_card_ss.png)
 
 ```swift
+// Basic card
 FloeCard {
-    VStack {
-        Text("Card Title")
-            .floeFont(.headline)
-        Text("Card content goes here")
-            .floeFont(.body)
-    }
+    Text("Card content")
+}
+
+// Selectable card
+@State private var isSelected = false
+
+FloeCard(
+    isSelectable: true,
+    isSelected: $isSelected
+) {
+    Text("Tap to select")
+}
+
+// Card with swipe actions
+FloeCard(
+    leadingSwipeActions: [
+        FloeSwipeAction(icon: "checkmark", color: .green) { 
+            // Complete action
+        }
+    ],
+    trailingSwipeActions: [
+        FloeSwipeAction(icon: "trash", color: .red) { 
+            // Delete action
+        },
+        FloeSwipeAction(icon: "pencil", color: .blue) { 
+            // Edit action
+        }
+    ]
+) {
+    Text("Swipe for actions")
+}
+
+// Interactive card
+FloeCard(
+    onTap: { print("Tapped") },
+    onLongPress: { print("Long pressed") }
+) {
+    Text("Interactive content")
 }
 
 // Custom styling
-FloeCard(backgroundColor: .blue.opacity(0.1),
-         shadowStyle: .elevated,
-         padding: .spacious) {
+FloeCard(
+    backgroundColor: .blue.opacity(0.1),
+    shadowStyle: .elevated,
+    padding: .spacious
+) {
     // Content
 }
 ```
 
-**Features:** Customizable shadows, padding presets, border support
+**Features:** Selection states, swipe actions, tap/long press handlers, custom shadows, haptic feedback
 
 ---
 
@@ -242,7 +293,7 @@ FloeAvatarGroup(
 
 ---
 
-### FloeToast *(New)*
+### FloeToast
 Lightweight, animated toast notifications with swipe-to-dismiss and customizable styles.
 
 ```swift
@@ -286,7 +337,7 @@ FloeToast("Upload Complete",
 
 ---
 
-### FloeTabBar *(New)*
+### FloeTabBar
 Modern floating tab bar with smooth animations and flexible configuration.
 
 ![FloeTabBar Result Builder](Documentation/Screenshots/floe_tabbar_result_builder_ss.png)
@@ -372,7 +423,7 @@ FloeTabBar(
 
 ---
 
-### FloeSlider *(New)*
+### FloeSlider
 Customizable slider with haptic feedback, value labels, and both horizontal/vertical orientations.
 
 ```swift
@@ -423,7 +474,7 @@ FloeSlider(
 
 ---
 
-### FloeTextView *(New)*
+### FloeTextView
 Rich text display and editing component with expansion controls and character limits.
 
 ![FloeTextView Examples](Documentation/Screenshots/floe_textview_ss.png)
@@ -467,7 +518,7 @@ FloeTextView.attributedText(
 
 ---
 
-### FloeProgressIndicator *(New)*
+### FloeProgressIndicator
 Versatile progress indicators with linear and circular styles, supporting both determinate and indeterminate states.
 
 ![FloeProgressIndicator Demo](Documentation/Screenshots/floe_progress_indicator_rec.mov)
@@ -521,7 +572,7 @@ FloeProgressIndicator(
 
 ---
 
-### FloeSearchBar *(New)*
+### FloeSearchBar
 Enhanced search bar with modern styling and functionality.
 
 ```swift
@@ -562,7 +613,7 @@ FloeSearchBar.withCancelButton(
 
 ---
 
-### FloeSkeleton *(New)*
+### FloeSkeleton
 Skeleton loading components for beautiful placeholder UI while content loads.
 
 ```swift
@@ -618,6 +669,150 @@ AnyView()
 **Styles:** Text, circle, rectangle, card, custom  
 **Animations:** Shimmer, pulse, wave, none  
 **Features:** Multiple animation types, customizable colors, automatic staggered loading, convenience methods for common use cases, **view modifiers for any SwiftUI view**
+
+---
+
+### FloeSegmentedControl
+Modern segmented control with multiple styles and smooth animations.
+
+```swift
+@State private var selectedTimeRange = "Day"
+@State private var selectedTab = "Active"
+
+// Pill style (default)
+FloeSegmentedControl(
+    selection: $selectedTimeRange,
+    options: ["Day", "Week", "Month", "Year"],
+    style: .pill
+)
+
+// Underline style
+FloeSegmentedControl(
+    selection: $selectedTab,
+    options: ["All", "Active", "Completed"],
+    style: .underline
+)
+
+// Card style
+FloeSegmentedControl(
+    selection: $selectedTab,
+    options: ["Active", "Paused", "Archived"],
+    style: .card,
+    accentColor: FloeColors.success
+)
+
+// With icons
+FloeSegmentedControlWithIcons(
+    selection: $selectedTab,
+    options: [
+        .init(id: "home", title: "Home", icon: "house", selectedIcon: "house.fill"),
+        .init(id: "search", title: "Search", icon: "magnifyingglass"),
+        .init(id: "profile", title: "Profile", icon: "person", selectedIcon: "person.fill")
+    ]
+)
+
+// Icon-only
+FloeSegmentedControlWithIcons(
+    selection: $selectedTab,
+    options: [
+        .init(id: "home", icon: "house", selectedIcon: "house.fill"),
+        .init(id: "search", icon: "magnifyingglass"),
+        .init(id: "favorites", icon: "heart", selectedIcon: "heart.fill")
+    ],
+    style: .card,
+    showTitles: false
+)
+```
+
+**Styles:** `.pill`, `.underline`, `.card`  
+**Features:** Smooth animations, haptic feedback, icon support, customizable colors
+
+---
+
+### FloeEmptyState
+Beautiful empty state views for onboarding, errors, and no-data scenarios.
+
+```swift
+// Basic empty state
+FloeEmptyState(
+    icon: "sparkles",
+    title: "Your day awaits",
+    message: "No activities scheduled for today"
+) {
+    FloeButton.primary("Create First Habit") { }
+}
+
+// Preset states
+FloeEmptyState.noData()
+FloeEmptyState.error(retryAction: { /* retry */ })
+FloeEmptyState.success(title: "All Done!")
+FloeEmptyState.search(clearAction: { /* clear */ })
+FloeEmptyState.loading(message: "Fetching data...")
+
+// Custom styling
+FloeEmptyState(
+    customIcon: Image("custom-illustration"),
+    title: "Welcome!",
+    message: "Let's get started",
+    style: .large,
+    iconColor: FloeColors.accent
+) {
+    FloeButtonGroup {
+        FloeButton.ghost("Learn More") { }
+        FloeButton.primary("Get Started") { }
+    }
+}
+```
+
+**Styles:** `.compact`, `.standard`, `.large`  
+**Presets:** No data, error, success, search, loading  
+**Features:** Animated entrance, custom icons, action buttons, multiple sizes
+
+---
+
+### FloeBadge
+Notification badges, status indicators, and count displays.
+
+```swift
+// Basic badges
+Image(systemName: "bell")
+    .floeBadge("3")
+
+Image(systemName: "message")
+    .floeDotBadge()
+
+// Count badges with max
+Image(systemName: "envelope")
+    .floeBadge(count: 150, max: 99) // Shows "99+"
+
+// Custom positions
+SomeView()
+    .floeBadge("NEW", position: .topTrailing)
+    .floeBadge("5", position: .bottomLeading)
+
+// Preset badges
+FloeBadge.notification(count: 5)
+FloeBadge.status(online: true)
+FloeBadge.streak(7) // Shows "7🔥"
+FloeBadge.new()
+FloeBadge.pro()
+
+// On components
+FloeAvatar.initials("JD")
+    .floeBadge(FloeBadge.status(online: true), position: .bottomTrailing)
+
+FloeButton.primary("Notifications") { }
+    .floeBadge(count: 3)
+
+FloeCard {
+    Text("New Feature")
+}
+.floeBadge(FloeBadge.new())
+```
+
+**Styles:** `.number`, `.dot`, `.icon`, `.text`  
+**Positions:** `.topTrailing`, `.topLeading`, `.bottomTrailing`, `.bottomLeading`  
+**Features:** Animated appearance, count limits, preset styles, works with any view
 
 ---
 
@@ -813,52 +1008,6 @@ RoundedRectangle(cornerRadius: 12)
 
 // Available styles: .none, .subtle, .soft, .medium, .elevated
 ```
-
----
-
-## 🗺️ Roadmap
-
-### 🎛️ FloeStepper *(Next Phase)*
-Custom stepper component with enhanced visual feedback.
-- Smooth animations and haptic feedback
-- Custom styling and button designs
-- Long press for rapid changes
-- Custom step values and ranges
-
-### 📅 FloeDatePicker & FloeTimePicker *(Next Phase)*
-Modern date and time selection components.
-- Inline and compact picker styles
-- Custom styling with FloeKit design language
-- Range selection support
-- Localization and timezone support
-
-### 🔍 FloeSearchBar *(Next Phase)*
-Enhanced search bar with modern styling and functionality.
-- Animated search icon and clear button
-- Search suggestions and recent searches
-- Voice input support
-- Custom filtering and debouncing
-
-### 📋 FloeList & FloeGrid *(Planned)*
-Enhanced list and grid components with built-in styling.
-- Pull-to-refresh and infinite scrolling
-- Swipe actions and reordering
-- Section headers with sticky behavior
-- Loading states and empty state views
-
-### 🎨 FloeColorPicker *(Planned)*
-Modern color selection component.
-- Multiple picker styles (wheel, palette, sliders)
-- Custom color palettes and recent colors
-- Hex, RGB, HSL input support
-- Eyedropper functionality
-
-### 📊 FloeChart *(Planned)*
-Simple charting components for basic data visualization.
-- Line, bar, and pie chart support
-- Animated data updates
-- Interactive tooltips and legends
-- Customizable colors and styling
 
 ---
 

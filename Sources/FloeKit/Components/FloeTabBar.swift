@@ -229,7 +229,7 @@ public struct FloeTabBar: View {
         public init(
             action: @escaping () -> Void,
             icon: Image = Image(systemName: "plus"),
-            backgroundColor: Color = .floePreviewPrimary,
+            backgroundColor: Color = FloeColors.primary,
             foregroundColor: Color = .white
         ) {
             self.action = action
@@ -1322,6 +1322,8 @@ private extension Color {
     static var systemGroupedBackground: Color {
         #if canImport(UIKit)
         return Color(UIColor.systemGroupedBackground)
+        #elseif os(macOS)
+        return Color(NSColor.controlBackgroundColor)
         #else
         return Color.gray.opacity(0.1)
         #endif
@@ -1330,6 +1332,8 @@ private extension Color {
     static var secondarySystemGroupedBackground: Color {
         #if canImport(UIKit)
         return Color(UIColor.secondarySystemGroupedBackground)
+        #elseif os(macOS)
+        return Color(NSColor.controlBackgroundColor).opacity(0.95)
         #else
         return Color.gray.opacity(0.05)
         #endif

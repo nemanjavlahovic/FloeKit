@@ -287,12 +287,13 @@ public extension View {
                                 .frame(height: 16)
                                 .frame(maxWidth: .infinity)
                                 .scaleEffect(x: width, anchor: .leading)
-                                .modifier(SkeletonAnimationModifier(
+                                .floeSkeleton(
+                                    true,
                                     animationType: animationType,
+                                    cornerRadius: 4,
                                     backgroundColor: FloeColors.neutral20,
-                                    highlightColor: FloeColors.neutral10,
-                                    isAnimated: true
-                                ))
+                                    highlightColor: FloeColors.neutral10
+                                )
                         }
                     }
                 }

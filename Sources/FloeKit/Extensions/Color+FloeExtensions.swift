@@ -1,4 +1,7 @@
 import SwiftUI
+#if os(macOS)
+import AppKit
+#endif
 
 // MARK: - FloeKit Color Extensions
 public extension Color {
@@ -42,9 +45,12 @@ public extension Color {
         return Color(UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? UIColor(dark) : UIColor(light)
         })
+        #elseif os(macOS)
+        return Color(NSColor(name: nil, dynamicProvider: { appearance in
+            appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? NSColor(dark) : NSColor(light)
+        }))
         #else
-        // On macOS, use environment-based color scheme detection
-        return Color.primary // Fallback for macOS
+        return light // Fallback for other platforms
         #endif
     }
     
@@ -75,8 +81,22 @@ public extension Color {
             brightness: Double(max(0, brightness - CGFloat(amount))),
             opacity: Double(alpha)
         )
+        #elseif os(macOS)
+        let nsColor = NSColor(self)
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        nsColor.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        
+        return Color(
+            hue: Double(hue),
+            saturation: Double(saturation),
+            brightness: Double(max(0, brightness - CGFloat(amount))),
+            opacity: Double(alpha)
+        )
         #else
-        // Fallback for macOS - simple opacity reduction
         return self.opacity(1.0 - amount)
         #endif
     }
@@ -135,8 +155,28 @@ public extension Color {
                          Int(green * 255),
                          Int(blue * 255))
         }
+        #elseif os(macOS)
+        let nsColor = NSColor(self)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        nsColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        if includeAlpha {
+            return String(format: "#%02X%02X%02X%02X",
+                         Int(alpha * 255),
+                         Int(red * 255),
+                         Int(green * 255),
+                         Int(blue * 255))
+        } else {
+            return String(format: "#%02X%02X%02X",
+                         Int(red * 255),
+                         Int(green * 255),
+                         Int(blue * 255))
+        }
         #else
-        // Fallback for macOS
         return "#000000"
         #endif
     }
@@ -173,8 +213,24 @@ public extension Color {
         return 0.2126 * adjust(component: red) +
                0.7152 * adjust(component: green) +
                0.0722 * adjust(component: blue)
+        #elseif os(macOS)
+        let nsColor = NSColor(self)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        nsColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        func adjust(component: CGFloat) -> Double {
+            let c = Double(component)
+            return c <= 0.03928 ? c / 12.92 : pow((c + 0.055) / 1.055, 2.4)
+        }
+        
+        return 0.2126 * adjust(component: red) +
+               0.7152 * adjust(component: green) +
+               0.0722 * adjust(component: blue)
         #else
-        // Fallback for macOS
         return 0.5
         #endif
     }
