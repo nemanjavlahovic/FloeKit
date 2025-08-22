@@ -296,140 +296,364 @@ public struct ArrayBuilder<Element> {
 
 // MARK: - Previews
 
-struct FloeCard_Previews: PreviewProvider {
-    struct InteractivePreview: View {
-        @State private var isSelected1 = false
-        @State private var isSelected2 = false
-        @State private var taskCompleted = false
+#Preview("Basic Cards") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeCard {
+            VStack(alignment: .leading, spacing: FloeSpacing.Size.sm.value) {
+                Text("Simple Card")
+                    .font(.headline)
+                Text("This is a basic card with some content inside.")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+            }
+        }
         
-        var body: some View {
-            ScrollView {
-                VStack(spacing: 20) {
-                    Text("Basic Cards")
+        FloeCard {
+            HStack {
+                Image(systemName: "star.fill")
+                    .foregroundColor(.yellow)
+                VStack(alignment: .leading) {
+                    Text("Card with Icon")
                         .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    FloeCard {
-                        Text("Simple Card")
-                            .font(.headline)
-                    }
-                    
-                    FloeCard(
-                        backgroundColor: FloeColors.primary.opacity(0.1),
-                        cornerRadius: 20,
-                        shadowStyle: .elevated,
-                        borderColor: FloeColors.primary
-                    ) {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Custom Styled Card")
-                                .font(.headline)
-                            Text("With custom background, border, and shadow")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    
-                    Divider()
-                    
-                    Text("Selectable Cards")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    FloeCard(
-                        isSelectable: true,
-                        isSelected: $isSelected1
-                    ) {
-                        HStack {
-                            Image(systemName: isSelected1 ? "checkmark.circle.fill" : "circle")
-                                .foregroundColor(isSelected1 ? FloeColors.primary : .secondary)
-                            Text("Tap to select this card")
-                            Spacer()
-                        }
-                    }
-                    
-                    FloeCard(
-                        isSelectable: true,
-                        isSelected: $isSelected2,
-                        selectedBorderColor: FloeColors.success,
-                        selectedBackgroundColor: FloeColors.success.opacity(0.1)
-                    ) {
-                        HStack {
-                            Image(systemName: isSelected2 ? "star.fill" : "star")
-                                .foregroundColor(isSelected2 ? FloeColors.success : .secondary)
-                            Text("Another selectable card")
-                            Spacer()
-                        }
-                    }
-                    
-                    Divider()
-                    
-                    Text("Interactive Cards")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    FloeCard(
-                        onTap: {
-                            print("Card tapped!")
-                        },
-                        onLongPress: {
-                            print("Card long pressed!")
-                        }
-                    ) {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Interactive Card")
-                                .font(.headline)
-                            Text("Tap or long press for actions")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    
-                    FloeCard(
-                        leadingSwipeActions: [
-                            FloeSwipeAction(icon: "checkmark", color: .green) {
-                                taskCompleted.toggle()
-                            }
-                        ],
-                        trailingSwipeActions: [
-                            FloeSwipeAction(icon: "trash", color: .red) {
-                                print("Delete")
-                            },
-                            FloeSwipeAction(icon: "pencil", color: .blue) {
-                                print("Edit")
-                            }
-                        ]
-                    ) {
-                        HStack {
-                            Image(systemName: taskCompleted ? "checkmark.circle.fill" : "circle")
-                                .foregroundColor(taskCompleted ? .green : .secondary)
-                            VStack(alignment: .leading) {
-                                Text("Swipeable Task Card")
-                                    .font(.headline)
-                                    .strikethrough(taskCompleted)
-                                Text("Swipe left or right for actions")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                            Spacer()
-                        }
-                    }
+                    Text("Icon and text layout")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
-                .padding()
+                Spacer()
             }
         }
     }
-    
-    static var previews: some View {
-        Group {
-            // Dark mode preview
-            InteractivePreview()
-                .preferredColorScheme(.dark)
-                .previewDisplayName("Dark Mode - Interactive")
-            
-            // Light mode preview
-            InteractivePreview()
-                .preferredColorScheme(.light)
-                .previewDisplayName("Light Mode - Interactive")
+    .padding()
+}
+
+#Preview("Card Styles") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeCard(backgroundColor: .blue.opacity(0.1), shadowStyle: .soft) {
+            Text("Soft Shadow Card")
+                .font(.headline)
+                .foregroundColor(.blue)
+        }
+        
+        FloeCard(backgroundColor: .green.opacity(0.1), shadowStyle: .elevated) {
+            Text("Elevated Card")
+                .font(.headline)
+                .foregroundColor(.green)
+        }
+        
+        FloeCard(backgroundColor: .purple.opacity(0.1), cornerRadius: 24, shadowStyle: .none) {
+            Text("Rounded Card")
+                .font(.headline)
+                .foregroundColor(.purple)
         }
     }
+    .padding()
 }
+
+#Preview("Cards with Borders") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeCard(borderColor: .blue, borderWidth: 2) {
+            Text("Blue Border Card")
+                .font(.headline)
+                .foregroundColor(.blue)
+        }
+        
+        FloeCard(borderColor: .red, borderWidth: 1) {
+            Text("Red Border Card")
+                .font(.headline)
+                .foregroundColor(.red)
+        }
+        
+        FloeCard(backgroundColor: .yellow.opacity(0.1), borderColor: .orange, borderWidth: 3) {
+            Text("Thick Border Card")
+                .font(.headline)
+                .foregroundColor(.orange)
+        }
+    }
+    .padding()
+}
+
+#Preview("Selectable Cards") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeCard(isSelectable: true, isSelected: .constant(false)) {
+            VStack(alignment: .leading) {
+                Text("Tap to Select")
+                    .font(.headline)
+                Text("This card can be selected")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+            }
+        }
+        
+        FloeCard(isSelectable: true, isSelected: .constant(true)) {
+            VStack(alignment: .leading) {
+                Text("Selected Card")
+                    .font(.headline)
+                Text("This card is currently selected")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+    .padding()
+}
+
+#Preview("Interactive Cards") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeCard(onTap: { print("Card tapped") }) {
+            VStack(alignment: .leading) {
+                Text("Tap Me")
+                    .font(.headline)
+                Text("This card responds to taps")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+            }
+        }
+        
+        FloeCard(onLongPress: { print("Card long pressed") }) {
+            VStack(alignment: .leading) {
+                Text("Long Press Me")
+                    .font(.headline)
+                Text("This card responds to long press")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+            }
+        }
+        
+        FloeCard(
+            onTap: { print("Tapped") },
+            onLongPress: { print("Long pressed") }
+        ) {
+            VStack(alignment: .leading) {
+                Text("Tap or Long Press")
+                    .font(.headline)
+                Text("This card responds to both gestures")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+    .padding()
+}
+
+#Preview("Cards with Swipe Actions") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeCard(
+            leadingSwipeActions: [
+                FloeSwipeAction(icon: "heart.fill", color: .green) { print("Like") },
+                FloeSwipeAction(icon: "bookmark.fill", color: .blue) { print("Save") }
+            ]
+        ) {
+            VStack(alignment: .leading) {
+                Text("Swipe Right")
+                    .font(.headline)
+                Text("Swipe to reveal like and save actions")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+            }
+        }
+        
+        FloeCard(
+            trailingSwipeActions: [
+                FloeSwipeAction(icon: "square.and.arrow.up", color: .blue) { print("Share") },
+                FloeSwipeAction(icon: "trash.fill", color: .red) { print("Delete") }
+            ]
+        ) {
+            VStack(alignment: .leading) {
+                Text("Swipe Left")
+                    .font(.headline)
+                Text("Swipe to reveal share and delete actions")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+            }
+        }
+        
+        FloeCard(
+            leadingSwipeActions: [
+                FloeSwipeAction(icon: "checkmark", color: .green) { print("Complete") }
+            ],
+            trailingSwipeActions: [
+                FloeSwipeAction(icon: "trash", color: .red) { print("Delete") }
+            ]
+        ) {
+            VStack(alignment: .leading) {
+                Text("Swipe Both Ways")
+                    .font(.headline)
+                Text("Swipe left or right for different actions")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+    .padding()
+}
+
+#Preview("Content Cards") {
+    ScrollView {
+        VStack(spacing: FloeSpacing.Size.md.value) {
+            // Profile Card
+            FloeCard {
+                HStack(spacing: FloeSpacing.Size.md.value) {
+                    Circle()
+                        .fill(Color.blue)
+                        .frame(width: 50, height: 50)
+                        .overlay(
+                            Text("JD")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                        )
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("John Doe")
+                            .font(.headline)
+                        Text("iOS Developer")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        Text("San Francisco, CA")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Spacer()
+                    
+                    Button("Follow") {
+                        print("Follow tapped")
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                }
+            }
+            
+            // Article Card
+            FloeCard {
+                VStack(alignment: .leading, spacing: FloeSpacing.Size.sm.value) {
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(height: 120)
+                        .cornerRadius(8)
+                    
+                    Text("How to Build Great SwiftUI Apps")
+                        .font(.headline)
+                    
+                    Text("Learn the best practices for creating beautiful and performant SwiftUI applications...")
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .lineLimit(2)
+                    
+                    HStack {
+                        Text("5 min read")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        
+                        Spacer()
+                        
+                        HStack(spacing: 16) {
+                            Button(action: {}) {
+                                Image(systemName: "heart")
+                                    .foregroundColor(.red)
+                            }
+                            
+                            Button(action: {}) {
+                                Image(systemName: "square.and.arrow.up")
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Product Card
+            FloeCard {
+                VStack(alignment: .leading, spacing: FloeSpacing.Size.sm.value) {
+                    Rectangle()
+                        .fill(Color.orange.opacity(0.3))
+                        .frame(height: 100)
+                        .cornerRadius(8)
+                    
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text("iPhone 15 Pro")
+                                .font(.headline)
+                            Text("From $999")
+                                .font(.system(size: 28, weight: .bold))
+                                .foregroundColor(.primary)
+                        }
+                        
+                        Spacer()
+                        
+                        Button("Buy Now") {
+                            print("Buy now tapped")
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .background(Color.black)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                    }
+                }
+            }
+        }
+        .padding()
+    }
+}
+
+#Preview("Card Modifier") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        Text("Using Card Modifier")
+            .font(.headline)
+            .floeCard()
+        
+        HStack {
+            Text("Custom Style")
+                .font(.body)
+            Spacer()
+            Image(systemName: "arrow.right")
+        }
+        .floeCard(backgroundColor: .blue.opacity(0.1), cornerRadius: 12)
+        
+        VStack(alignment: .leading) {
+            Text("No Shadow Card")
+                .font(.headline)
+            Text("This card has no shadow")
+                .font(.body)
+                .foregroundColor(.secondary)
+        }
+        .floeCard(shadowStyle: .none)
+    }
+    .padding()
+}
+
+#Preview("Dark Mode") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeCard {
+            VStack(alignment: .leading) {
+                Text("Dark Mode Card")
+                    .font(.headline)
+                Text("This card adapts to dark mode")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+            }
+        }
+        
+        FloeCard(isSelectable: true, isSelected: .constant(true)) {
+            VStack(alignment: .leading) {
+                Text("Selected in Dark Mode")
+                    .font(.headline)
+                Text("Selection styling in dark mode")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+            }
+        }
+        
+        FloeCard(borderColor: .blue, borderWidth: 2) {
+            Text("Bordered Card")
+                .font(.headline)
+                .foregroundColor(.blue)
+        }
+    }
+    .padding()
+    .preferredColorScheme(.dark)
+}
+

@@ -232,8 +232,7 @@ public struct FloeAvatar: View {
             
         case .initials(let initials):
             Text(initials.prefix(2).uppercased())
-                .font(size.font)
-                .fontWeight(.semibold)
+                .font(.system(size: fontSizeForAvatarSize(size), weight: .semibold))
                 .foregroundColor(foregroundColor)
             
         case .placeholder:
@@ -252,6 +251,17 @@ public struct FloeAvatar: View {
                     .strokeBorder(FloeColors.background, lineWidth: 2)
             )
             .offset(x: size.diameter * 0.3, y: size.diameter * 0.3)
+    }
+}
+
+// MARK: - Helper Functions
+
+private func fontSizeForAvatarSize(_ size: FloeAvatar.Size) -> CGFloat {
+    switch size {
+    case .small: return 12
+    case .medium: return 16
+    case .large: return 18
+    case .extraLarge: return 24
     }
 }
 
@@ -387,194 +397,284 @@ public extension FloeAvatar {
 
 // MARK: - Previews
 
-struct FloeAvatar_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            // Dark mode preview (default)
-            ScrollView {
-                VStack(spacing: FloeSpacing.Size.lg.value) {
-                    PreviewWrapper()
-                }
-                .floePadding(.spacious)
+#Preview("Avatar Sizes") {
+    HStack(spacing: FloeSpacing.Size.md.value) {
+        FloeAvatar.initials("JS", size: .small)
+        FloeAvatar.initials("MD", size: .medium)
+        FloeAvatar.initials("AB", size: .large)
+        FloeAvatar.initials("KL", size: .extraLarge)
+    }
+    .padding()
+}
+
+#Preview("Avatar with Initials") {
+    HStack(spacing: FloeSpacing.Size.md.value) {
+        FloeAvatar.initials("JS")
+        FloeAvatar.initials("MD", backgroundColor: .blue)
+        FloeAvatar.initials("AB", backgroundColor: .green)
+        FloeAvatar.initials("KL", backgroundColor: .purple)
+    }
+    .padding()
+}
+
+#Preview("Avatar with System Icons") {
+    HStack(spacing: FloeSpacing.Size.md.value) {
+        FloeAvatar.icon("person.fill")
+        FloeAvatar.icon("star.fill", backgroundColor: .orange)
+        FloeAvatar.icon("heart.fill", backgroundColor: .pink)
+        FloeAvatar.icon("bolt.fill", backgroundColor: .yellow)
+    }
+    .padding()
+}
+
+#Preview("Avatar with Status Indicators") {
+    HStack(spacing: FloeSpacing.Size.md.value) {
+        FloeAvatar(initials: "ON", statusIndicator: .online)
+        FloeAvatar(initials: "OFF", statusIndicator: .offline)
+        FloeAvatar(initials: "AW", statusIndicator: .away)
+        FloeAvatar(initials: "BS", statusIndicator: .busy)
+    }
+    .padding()
+}
+
+#Preview("Placeholder Avatars") {
+    HStack(spacing: FloeSpacing.Size.md.value) {
+        FloeAvatar.placeholder(size: .small)
+        FloeAvatar.placeholder(size: .medium)
+        FloeAvatar.placeholder(size: .large)
+        FloeAvatar.placeholder(size: .extraLarge)
+    }
+    .padding()
+}
+
+#Preview("Custom Styled Avatars") {
+    HStack(spacing: FloeSpacing.Size.md.value) {
+        FloeAvatar(
+            initials: "BP",
+            backgroundColor: Color.blue.opacity(0.2),
+            foregroundColor: .blue,
+            borderColor: .blue,
+            borderWidth: 2
+        )
+        
+        FloeAvatar(
+            systemImage: "crown.fill",
+            backgroundColor: Color.yellow.opacity(0.2),
+            foregroundColor: .orange,
+            borderColor: .orange,
+            borderWidth: 3
+        )
+        
+        FloeAvatar(
+            initials: "VIP",
+            backgroundColor: .black,
+            foregroundColor: .white,
+            borderColor: .yellow,
+            borderWidth: 2
+        )
+    }
+    .padding()
+}
+
+#Preview("Interactive Avatars") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        Text("Tap avatars to see interaction")
+            .font(.caption)
+            .foregroundColor(.gray)
+        
+        HStack(spacing: FloeSpacing.Size.md.value) {
+            FloeAvatar(initials: "TM", onTap: { print("Profile tapped") })
+            FloeAvatar(systemImage: "message.fill", backgroundColor: .blue, onTap: { print("Message tapped") })
+            FloeAvatar(systemImage: "phone.fill", backgroundColor: .green, onTap: { print("Call tapped") })
+        }
+    }
+    .padding()
+}
+
+#Preview("Avatar Groups - Stacked") {
+    VStack(spacing: FloeSpacing.Size.lg.value) {
+        Text("Stacked Avatar Groups")
+            .font(.headline)
+        
+        FloeAvatarGroup(
+            avatars: [
+                FloeAvatar.initials("AB"),
+                FloeAvatar.initials("CD"),
+                FloeAvatar.initials("EF")
+            ],
+            style: .stacked
+        )
+        
+        FloeAvatarGroup(
+            avatars: [
+                FloeAvatar.initials("AB"),
+                FloeAvatar.initials("CD"),
+                FloeAvatar.initials("EF"),
+                FloeAvatar.initials("GH"),
+                FloeAvatar.initials("IJ"),
+                FloeAvatar.initials("KL")
+            ],
+            style: .stacked,
+            maxVisible: 3
+        )
+    }
+    .padding()
+}
+
+#Preview("Avatar Groups - Grid") {
+    VStack(spacing: FloeSpacing.Size.lg.value) {
+        Text("Grid Avatar Groups")
+            .font(.headline)
+        
+        FloeAvatarGroup(
+            avatars: [
+                FloeAvatar.initials("AB", size: .small),
+                FloeAvatar.initials("CD", size: .small),
+                FloeAvatar.initials("EF", size: .small),
+                FloeAvatar.initials("GH", size: .small)
+            ],
+            style: .grid(columns: 2),
+            size: .small
+        )
+        
+        FloeAvatarGroup(
+            avatars: [
+                FloeAvatar.initials("AB", size: .small),
+                FloeAvatar.initials("CD", size: .small),
+                FloeAvatar.initials("EF", size: .small),
+                FloeAvatar.initials("GH", size: .small),
+                FloeAvatar.initials("IJ", size: .small),
+                FloeAvatar.initials("KL", size: .small)
+            ],
+            style: .grid(columns: 3),
+            size: .small
+        )
+    }
+    .padding()
+}
+
+#Preview("Team Avatar Examples") {
+    VStack(spacing: FloeSpacing.Size.lg.value) {
+        Text("Team Collaboration")
+            .font(.system(size: 28, weight: .bold))
+        
+        VStack(spacing: FloeSpacing.Size.md.value) {
+            HStack {
+                Text("Online Team Members:")
+                    .font(.subheadline)
+                Spacer()
             }
-            .preferredColorScheme(.dark)
-            .previewDisplayName("Dark Mode")
             
-            // Light mode preview
-            ScrollView {
-                VStack(spacing: FloeSpacing.Size.lg.value) {
-                    PreviewWrapper()
-                }
-                .floePadding(.spacious)
-            }
-            .preferredColorScheme(.light)
-            .previewDisplayName("Light Mode")
+            FloeAvatarGroup(
+                avatars: [
+                    FloeAvatar.online(initials: "JD", size: .medium),
+                    FloeAvatar.online(initials: "SM", size: .medium),
+                    FloeAvatar(initials: "MK", size: .medium, statusIndicator: .away),
+                    FloeAvatar(initials: "LR", size: .medium, statusIndicator: .busy),
+                    FloeAvatar(initials: "TW", size: .medium, statusIndicator: .offline)
+                ],
+                style: .stacked,
+                maxVisible: 4,
+                size: .medium
+            )
         }
-        .previewLayout(.sizeThatFits)
-    }
-    
-    struct PreviewWrapper: View {
-        var body: some View {
-            VStack(spacing: FloeSpacing.Size.xl.value) {
-                // Basic Avatars
-                VStack(alignment: .leading, spacing: FloeSpacing.Size.md.value) {
-                    Text("Basic Avatars")
-                        .floeFont(.headline)
-                        .padding(.horizontal)
-                    
-                    HStack(spacing: FloeSpacing.Size.lg.value) {
-                        FloeAvatar.initials("JD")
-                        FloeAvatar.icon("person.fill")
-                        FloeAvatar.placeholder()
-                        FloeAvatar(
-                            systemImage: "star.fill",
-                            backgroundColor: FloeColors.accent,
-                            foregroundColor: .white
-                        )
-                    }
-                }
-                
-                // Size Variations
-                VStack(alignment: .leading, spacing: FloeSpacing.Size.md.value) {
-                    Text("Size Variations")
-                        .floeFont(.headline)
-                        .padding(.horizontal)
-                    
-                    HStack(spacing: FloeSpacing.Size.lg.value) {
-                        FloeAvatar.initials("S", size: .small)
-                        FloeAvatar.initials("M", size: .medium)
-                        FloeAvatar.initials("L", size: .large)
-                        FloeAvatar.initials("XL", size: .extraLarge)
-                    }
-                }
-                
-                // Status Indicators
-                VStack(alignment: .leading, spacing: FloeSpacing.Size.md.value) {
-                    Text("Status Indicators")
-                        .floeFont(.headline)
-                        .padding(.horizontal)
-                    
-                    HStack(spacing: FloeSpacing.Size.lg.value) {
-                        FloeAvatar.online(initials: "ON")
-                        
-                        FloeAvatar(
-                            initials: "OF",
-                            statusIndicator: .offline
-                        )
-                        
-                        FloeAvatar(
-                            initials: "AW",
-                            statusIndicator: .away
-                        )
-                        
-                        FloeAvatar(
-                            initials: "BY",
-                            statusIndicator: .busy
-                        )
-                        
-                        FloeAvatar(
-                            initials: "CT",
-                            statusIndicator: .custom(.purple)
-                        )
-                    }
-                }
-                
-                // Custom Styling
-                VStack(alignment: .leading, spacing: FloeSpacing.Size.md.value) {
-                    Text("Custom Styling")
-                        .floeFont(.headline)
-                        .padding(.horizontal)
-                    
-                    HStack(spacing: FloeSpacing.Size.lg.value) {
-                        FloeAvatar(
-                            initials: "BR",
-                            backgroundColor: .clear,
-                            foregroundColor: FloeColors.primary,
-                            borderColor: FloeColors.primary,
-                            borderWidth: 2
-                        )
-                        
-                        FloeAvatar(
-                            systemImage: "crown.fill",
-                            backgroundColor: Color.orange,
-                            foregroundColor: .white,
-                            shadowStyle: .elevated
-                        )
-                        
-                        FloeAvatar(
-                            initials: "VIP",
-                            backgroundColor: Color.black,
-                            foregroundColor: FloeColors.accent,
-                            borderColor: FloeColors.accent,
-                            borderWidth: 2
-                        )
-                    }
-                }
-                
-                // Grouped Avatars
-                VStack(alignment: .leading, spacing: FloeSpacing.Size.md.value) {
-                    Text("Grouped Avatars")
-                        .floeFont(.headline)
-                        .padding(.horizontal)
-                    
-                    VStack(spacing: FloeSpacing.Size.lg.value) {
-                        // Stacked avatars
-                        FloeAvatarGroup(
-                            avatars: [
-                                FloeAvatar.initials("A", backgroundColor: FloeColors.error),
-                                FloeAvatar.initials("B", backgroundColor: FloeColors.primary),
-                                FloeAvatar.initials("C", backgroundColor: FloeColors.success),
-                                FloeAvatar.initials("D", backgroundColor: .purple),
-                                FloeAvatar.initials("E", backgroundColor: .orange),
-                                FloeAvatar.initials("F", backgroundColor: .pink)
-                            ],
-                            style: .stacked,
-                            maxVisible: 4
-                        )
-                        
-                        // Grid avatars
-                        FloeAvatarGroup(
-                            avatars: [
-                                FloeAvatar.initials("1"),
-                                FloeAvatar.initials("2"),
-                                FloeAvatar.initials("3"),
-                                FloeAvatar.initials("4"),
-                                FloeAvatar.initials("5"),
-                                FloeAvatar.initials("6")
-                            ],
-                            style: .grid(columns: 3),
-                            size: .small
-                        )
-                    }
-                }
-                
-                // Interactive Avatars
-                VStack(alignment: .leading, spacing: FloeSpacing.Size.md.value) {
-                    Text("Interactive")
-                        .floeFont(.headline)
-                        .padding(.horizontal)
-                    
-                    HStack(spacing: FloeSpacing.Size.lg.value) {
-                        FloeAvatar(
-                            initials: "TAP",
-                            backgroundColor: FloeColors.secondary,
-                            foregroundColor: .white
-                        ) {
-                            print("Avatar tapped!")
-                        }
-                        
-                        FloeAvatar(
-                            systemImage: "plus",
-                            backgroundColor: FloeColors.surface,
-                            foregroundColor: FloeColors.primary,
-                            borderColor: FloeColors.primary,
-                            borderWidth: 2
-                        ) {
-                            print("Add avatar tapped!")
-                        }
-                    }
-                }
+        
+        VStack(spacing: FloeSpacing.Size.md.value) {
+            HStack {
+                Text("Project Contributors:")
+                    .font(.subheadline)
+                Spacer()
             }
+            
+            FloeAvatarGroup(
+                avatars: [
+                    FloeAvatar.initials("AD", size: .small),
+                    FloeAvatar.initials("BC", size: .small),
+                    FloeAvatar.initials("DE", size: .small),
+                    FloeAvatar.initials("FG", size: .small),
+                    FloeAvatar.initials("HI", size: .small),
+                    FloeAvatar.initials("JK", size: .small),
+                    FloeAvatar.initials("LM", size: .small)
+                ],
+                style: .stacked,
+                maxVisible: 5,
+                size: .small
+            )
         }
     }
-} 
+    .padding()
+}
+
+#Preview("Special Avatars") {
+    HStack(spacing: FloeSpacing.Size.md.value) {
+        FloeAvatar(
+            initials: "PRO",
+            backgroundColor: Color.gold,
+            foregroundColor: .white,
+            borderColor: .yellow,
+            borderWidth: 2
+        )
+        
+        FloeAvatar(
+            initials: "AI",
+            backgroundColor: Color.purple.opacity(0.2),
+            foregroundColor: .purple,
+            borderColor: .purple,
+            borderWidth: 2,
+            statusIndicator: .custom(.purple)
+        )
+        
+        FloeAvatar(
+            systemImage: "sparkles",
+            backgroundColor: Color.yellow.opacity(0.2),
+            foregroundColor: .orange,
+            shadowStyle: .elevated
+        )
+    }
+    .padding()
+}
+
+#Preview("Dark Mode") {
+    HStack(spacing: FloeSpacing.Size.md.value) {
+        FloeAvatar.initials("DM")
+        FloeAvatar.icon("moon.fill", backgroundColor: .indigo)
+        FloeAvatar.online(initials: "ON")
+        FloeAvatar.placeholder()
+    }
+    .padding()
+    .preferredColorScheme(.dark)
+}
+
+#Preview("Avatar Sizes Comparison") {
+    VStack(spacing: FloeSpacing.Size.lg.value) {
+        VStack {
+            Text("Small (32pt)")
+                .font(.caption)
+                .foregroundColor(.gray)
+            FloeAvatar.initials("S", size: .small)
+        }
+        
+        VStack {
+            Text("Medium (48pt)")
+                .font(.caption)
+                .foregroundColor(.gray)
+            FloeAvatar.initials("M", size: .medium)
+        }
+        
+        VStack {
+            Text("Large (64pt)")
+                .font(.caption)
+                .foregroundColor(.gray)
+            FloeAvatar.initials("L", size: .large)
+        }
+        
+        VStack {
+            Text("Extra Large (96pt)")
+                .font(.caption)
+                .foregroundColor(.gray)
+            FloeAvatar.initials("XL", size: .extraLarge)
+        }
+    }
+    .padding()
+}
+

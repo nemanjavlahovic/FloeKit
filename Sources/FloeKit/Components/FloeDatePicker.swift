@@ -110,16 +110,14 @@ public struct FloeDatePicker: View {
             HStack(spacing: 0) {
                 if showWeekNumbers {
                     Text("W")
-                        .font(.caption)
-                        .fontWeight(.medium)
+                        .font(.system(size: 12, weight: .medium))
                         .foregroundColor(FloeColors.neutral40)
                         .frame(width: 30)
                 }
                 
                 ForEach(weekdaySymbols, id: \.self) { symbol in
                     Text(symbol)
-                        .font(.caption)
-                        .fontWeight(.medium)
+                        .font(.system(size: 12, weight: .medium))
                         .foregroundColor(FloeColors.neutral40)
                         .frame(maxWidth: .infinity)
                 }
@@ -475,7 +473,7 @@ private struct TimePickerSheet: View {
                         onSelect(selectedTime)
                         dismiss()
                     }
-                    .font(.body.bold())
+                    .font(.system(size: 16, weight: .bold))
                 }
             }
         }
@@ -527,84 +525,3 @@ public extension FloeDatePicker {
     }
 }
 
-// MARK: - Previews
-
-struct FloeDatePicker_Previews: PreviewProvider {
-    static var previews: some View {
-        DatePickerPreviewView()
-    }
-    
-    struct DatePickerPreviewView: View {
-        @State private var date1 = Date()
-        @State private var date2 = Date()
-        @State private var date3 = Date()
-        @State private var date4 = Date()
-        
-        var body: some View {
-            ScrollView {
-                VStack(spacing: 32) {
-                    Text("FloeDatePicker Examples")
-                        .font(.title)
-                        .fontWeight(.bold)
-                    
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Calendar Style")
-                            .font(.headline)
-                        
-                        FloeDatePicker.calendar(
-                            selectedDate: $date1,
-                            minDate: Date(),
-                            onChange: { date in
-                                print("Selected: \(date)")
-                            }
-                        )
-                        
-                        Text("Selected: \(date1.formatted())")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Calendar with Time")
-                            .font(.headline)
-                        
-                        FloeDatePicker(
-                            selectedDate: $date2,
-                            style: .calendar,
-                            selectionMode: .dateAndTime,
-                            highlightedDates: [
-                                Date().addingTimeInterval(86400),
-                                Date().addingTimeInterval(86400 * 3)
-                            ]
-                        )
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Inline Style")
-                            .font(.headline)
-                        
-                        FloeDatePicker.inline(
-                            selectedDate: $date3,
-                            selectionMode: .date
-                        )
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Compact Style")
-                            .font(.headline)
-                        
-                        HStack {
-                            Text("Date:")
-                            FloeDatePicker.compact(
-                                selectedDate: $date4,
-                                selectionMode: .dateAndTime
-                            )
-                            Spacer()
-                        }
-                    }
-                }
-                .padding()
-            }
-        }
-    }
-}

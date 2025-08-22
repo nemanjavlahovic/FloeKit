@@ -264,178 +264,299 @@ extension FloeBadge {
 
 // MARK: - Previews
 
-struct FloeBadge_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            // Dark mode
-            ScrollView {
-                VStack(spacing: 40) {
-                    // Basic badges
-                    HStack(spacing: 30) {
-                        VStack(spacing: 20) {
-                            Text("Number")
-                                .font(.caption)
-                            
-                            Image(systemName: "bell.fill")
-                                .font(.system(size: 30))
-                                .foregroundColor(FloeColors.neutral40)
-                                .floeBadge("3", position: .topTrailing)
-                                .frame(width: 50, height: 50)
-                        }
-                        
-                        VStack(spacing: 20) {
-                            Text("Dot")
-                                .font(.caption)
-                            
-                            Image(systemName: "message.fill")
-                                .font(.system(size: 30))
-                                .foregroundColor(FloeColors.neutral40)
-                                .floeDotBadge(position: .topTrailing)
-                                .frame(width: 50, height: 50)
-                        }
-                        
-                        VStack(spacing: 20) {
-                            Text("Icon")
-                                .font(.caption)
-                            
-                            Image(systemName: "person.circle.fill")
-                                .font(.system(size: 30))
-                                .foregroundColor(FloeColors.neutral40)
-                                .floeBadge(
-                                    FloeBadge(icon: "star.fill", color: FloeColors.accent),
-                                    position: .bottomTrailing
-                                )
-                                .frame(width: 50, height: 50)
-                        }
-                    }
-                    
-                    Divider()
-                    
-                    // Position examples
-                    VStack(spacing: 20) {
-                        Text("Badge Positions")
-                            .font(.headline)
-                        
-                        HStack(spacing: 30) {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(FloeColors.surface)
-                                .frame(width: 60, height: 60)
-                                .floeBadge("TL", position: .topLeading)
-                            
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(FloeColors.surface)
-                                .frame(width: 60, height: 60)
-                                .floeBadge("TR", position: .topTrailing)
-                            
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(FloeColors.surface)
-                                .frame(width: 60, height: 60)
-                                .floeBadge("BL", position: .bottomLeading)
-                            
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(FloeColors.surface)
-                                .frame(width: 60, height: 60)
-                                .floeBadge("BR", position: .bottomTrailing)
-                        }
-                    }
-                    
-                    Divider()
-                    
-                    // Preset badges
-                    VStack(spacing: 20) {
-                        Text("Preset Badges")
-                            .font(.headline)
-                        
-                        HStack(spacing: 30) {
-                            VStack {
-                                FloeCard {
-                                    Text("Notifications")
-                                }
-                                .floeBadge(FloeBadge.notification(count: 150))
-                            }
-                            
-                            VStack {
-                                FloeAvatar.initials("JD")
-                                    .floeBadge(FloeBadge.status(online: true), position: .bottomTrailing)
-                            }
-                            
-                            VStack {
-                                FloeButton.primary("Streak") {}
-                                    .floeBadge(FloeBadge.streak(7), position: .topTrailing)
-                            }
-                        }
-                        
-                        HStack(spacing: 30) {
-                            FloeCard {
-                                Text("New Feature")
-                            }
-                            .floeBadge(FloeBadge.new())
-                            
-                            FloeButton.secondary("Premium") {}
-                                .floeBadge(FloeBadge.pro(), position: .topTrailing)
-                        }
-                    }
-                    
-                    Divider()
-                    
-                    // Count badges with max
-                    VStack(spacing: 20) {
-                        Text("Count Badges")
-                            .font(.headline)
-                        
-                        HStack(spacing: 30) {
-                            Image(systemName: "envelope.fill")
-                                .font(.system(size: 30))
-                                .floeBadge(count: 5)
-                                .frame(width: 50, height: 50)
-                            
-                            Image(systemName: "envelope.fill")
-                                .font(.system(size: 30))
-                                .floeBadge(count: 99)
-                                .frame(width: 50, height: 50)
-                            
-                            Image(systemName: "envelope.fill")
-                                .font(.system(size: 30))
-                                .floeBadge(count: 150)
-                                .frame(width: 50, height: 50)
-                        }
-                    }
-                }
-                .padding()
-            }
-            .preferredColorScheme(.dark)
-            .previewDisplayName("Dark Mode")
-            
-            // Light mode
-            ScrollView {
-                VStack(spacing: 40) {
-                    HStack(spacing: 30) {
-                        Image(systemName: "bell.fill")
-                            .font(.system(size: 30))
-                            .foregroundColor(FloeColors.neutral40)
-                            .floeBadge("3", position: .topTrailing)
-                            .frame(width: 50, height: 50)
-                        
-                        Image(systemName: "message.fill")
-                            .font(.system(size: 30))
-                            .foregroundColor(FloeColors.neutral40)
-                            .floeDotBadge(position: .topTrailing)
-                            .frame(width: 50, height: 50)
-                        
-                        Image(systemName: "person.circle.fill")
-                            .font(.system(size: 30))
-                            .foregroundColor(FloeColors.neutral40)
-                            .floeBadge(
-                                FloeBadge(icon: "star.fill", color: FloeColors.accent),
-                                position: .bottomTrailing
-                            )
-                            .frame(width: 50, height: 50)
-                    }
-                }
-                .padding()
-            }
-            .preferredColorScheme(.light)
-            .previewDisplayName("Light Mode")
+#Preview("Badge Styles") {
+    VStack(spacing: FloeSpacing.Size.lg.value) {
+        HStack(spacing: FloeSpacing.Size.xl.value) {
+            FloeBadge(value: "5", style: .number)
+            FloeBadge(style: .dot)
+            FloeBadge(icon: "star.fill", style: .icon)
+            FloeBadge(value: "NEW", style: .text)
         }
     }
+    .padding()
 }
+
+#Preview("Number Badges") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        HStack(spacing: FloeSpacing.Size.lg.value) {
+            FloeBadge(value: "1")
+            FloeBadge(value: "9")
+            FloeBadge(value: "99")
+            FloeBadge(value: "99+")
+        }
+        
+        HStack(spacing: FloeSpacing.Size.lg.value) {
+            FloeBadge(value: "3", color: .blue)
+            FloeBadge(value: "12", color: .green)
+            FloeBadge(value: "999", color: .orange)
+        }
+    }
+    .padding()
+}
+
+#Preview("Icon Badges") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        HStack(spacing: FloeSpacing.Size.lg.value) {
+            FloeBadge.pro()
+            FloeBadge(icon: "star.fill", color: .yellow)
+            FloeBadge(icon: "heart.fill", color: .pink)
+            FloeBadge(icon: "checkmark", color: .green)
+        }
+        
+        HStack(spacing: FloeSpacing.Size.lg.value) {
+            FloeBadge(icon: "bolt.fill", color: .orange)
+            FloeBadge(icon: "flame.fill", color: .red)
+            FloeBadge(icon: "shield.fill", color: .blue)
+        }
+    }
+    .padding()
+}
+
+#Preview("Text Badges") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        HStack(spacing: FloeSpacing.Size.lg.value) {
+            FloeBadge.new()
+            FloeBadge(value: "BETA", style: .text, color: .blue)
+            FloeBadge(value: "HOT", style: .text, color: .red)
+            FloeBadge(value: "SALE", style: .text, color: .green)
+        }
+        
+        HStack(spacing: FloeSpacing.Size.lg.value) {
+            FloeBadge.streak(7)
+            FloeBadge(value: "VIP", style: .text, color: .purple)
+            FloeBadge(value: "PREMIUM", style: .text, color: .orange)
+        }
+    }
+    .padding()
+}
+
+#Preview("Dot Badges") {
+    HStack(spacing: FloeSpacing.Size.lg.value) {
+        FloeBadge.status(online: true)
+        FloeBadge.status(online: false)
+        FloeBadge(style: .dot, color: .blue)
+        FloeBadge(style: .dot, color: .green)
+        FloeBadge(style: .dot, color: .orange)
+    }
+    .padding()
+}
+
+#Preview("Badge Sizes") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        Text("Different Sizes")
+            .font(.headline)
+        
+        HStack(spacing: FloeSpacing.Size.lg.value) {
+            FloeBadge(value: "5", size: 16)
+            FloeBadge(value: "10", size: 20)
+            FloeBadge(value: "25", size: 24)
+            FloeBadge(value: "50", size: 28)
+        }
+        
+        HStack(spacing: FloeSpacing.Size.lg.value) {
+            FloeBadge(style: .dot, size: 16)
+            FloeBadge(style: .dot, size: 20)
+            FloeBadge(style: .dot, size: 24)
+            FloeBadge(style: .dot, size: 28)
+        }
+    }
+    .padding()
+}
+
+#Preview("Badges on Views") {
+    VStack(spacing: FloeSpacing.Size.xl.value) {
+        Text("Badge Modifiers")
+            .font(.system(size: 28, weight: .bold))
+        
+        HStack(spacing: FloeSpacing.Size.xl.value) {
+            // Button with number badge
+            Button("Messages") {}
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(10)
+                .floeBadge("3")
+            
+            // Icon with dot badge
+            Image(systemName: "bell.fill")
+                .font(.system(size: 30))
+                .floeDotBadge()
+            
+            // Custom badge
+            Rectangle()
+                .fill(Color.gray.opacity(0.3))
+                .frame(width: 60, height: 60)
+                .cornerRadius(10)
+                .floeBadge("NEW", style: .text, color: .green, position: .topLeading)
+        }
+        
+        HStack(spacing: FloeSpacing.Size.xl.value) {
+            // Avatar with status
+            Circle()
+                .fill(Color.blue)
+                .frame(width: 50, height: 50)
+                .floeBadge(FloeBadge.status(online: true), position: .bottomTrailing)
+            
+            // Shopping cart with count
+            Image(systemName: "cart.fill")
+                .font(.system(size: 30))
+                .floeBadge(count: 7)
+            
+            // Notification with high count
+            Image(systemName: "envelope.fill")
+                .font(.system(size: 30))
+                .floeBadge(count: 127, max: 99)
+        }
+    }
+    .padding()
+}
+
+#Preview("Badge Positions") {
+    VStack(spacing: FloeSpacing.Size.lg.value) {
+        Text("Badge Positions")
+            .font(.headline)
+        
+        LazyVGrid(columns: [
+            GridItem(.flexible()),
+            GridItem(.flexible()),
+            GridItem(.flexible())
+        ], spacing: FloeSpacing.Size.lg.value) {
+            
+            Rectangle()
+                .fill(Color.blue.opacity(0.3))
+                .frame(width: 60, height: 60)
+                .cornerRadius(10)
+                .floeBadge("TL", position: .topLeading)
+                .overlay(Text("Top\nLeading").font(.caption2))
+            
+            Rectangle()
+                .fill(Color.blue.opacity(0.3))
+                .frame(width: 60, height: 60)
+                .cornerRadius(10)
+                .floeBadge("TR", position: .topTrailing)
+                .overlay(Text("Top\nTrailing").font(.caption2))
+            
+            Rectangle()
+                .fill(Color.blue.opacity(0.3))
+                .frame(width: 60, height: 60)
+                .cornerRadius(10)
+                .floeBadge("C", position: .center)
+                .overlay(Text("Center").font(.caption2))
+            
+            Rectangle()
+                .fill(Color.blue.opacity(0.3))
+                .frame(width: 60, height: 60)
+                .cornerRadius(10)
+                .floeBadge("BL", position: .bottomLeading)
+                .overlay(Text("Bottom\nLeading").font(.caption2))
+            
+            Rectangle()
+                .fill(Color.blue.opacity(0.3))
+                .frame(width: 60, height: 60)
+                .cornerRadius(10)
+                .floeBadge("BR", position: .bottomTrailing)
+                .overlay(Text("Bottom\nTrailing").font(.caption2))
+        }
+    }
+    .padding()
+}
+
+#Preview("Animated Badges") {
+    VStack(spacing: FloeSpacing.Size.lg.value) {
+        Text("Animated Badges")
+            .font(.headline)
+        
+        HStack(spacing: FloeSpacing.Size.lg.value) {
+            FloeBadge(value: "LIVE", style: .text, color: .red, animate: true)
+            FloeBadge.new()
+            FloeBadge(value: "🔥", style: .text, animate: true)
+        }
+        
+        Text("These badges animate on appearance and value changes")
+            .font(.caption)
+            .foregroundColor(.gray)
+    }
+    .padding()
+}
+
+#Preview("E-commerce Badge Examples") {
+    VStack(spacing: FloeSpacing.Size.lg.value) {
+        Text("E-commerce Badges")
+            .font(.system(size: 28, weight: .bold))
+        
+        LazyVGrid(columns: [
+            GridItem(.flexible()),
+            GridItem(.flexible())
+        ], spacing: FloeSpacing.Size.lg.value) {
+            
+            // Product with sale badge
+            VStack {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(height: 120)
+                    .cornerRadius(10)
+                    .floeBadge("SALE", style: .text, color: .red, position: .topLeading)
+                
+                Text("Product Name")
+                    .font(.subheadline)
+            }
+            
+            // Product with new badge
+            VStack {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(height: 120)
+                    .cornerRadius(10)
+                    .floeBadge(FloeBadge.new(), position: .topTrailing)
+                
+                Text("New Product")
+                    .font(.subheadline)
+            }
+            
+            // Shopping cart icon
+            VStack {
+                Image(systemName: "cart.fill")
+                    .font(.system(size: 40))
+                    .floeBadge(count: 3)
+                
+                Text("Shopping Cart")
+                    .font(.subheadline)
+            }
+            
+            // Wishlist icon
+            VStack {
+                Image(systemName: "heart.fill")
+                    .font(.system(size: 40))
+                    .floeBadge(count: 12)
+                
+                Text("Wishlist")
+                    .font(.subheadline)
+            }
+        }
+    }
+    .padding()
+}
+
+#Preview("Dark Mode") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        HStack(spacing: FloeSpacing.Size.lg.value) {
+            FloeBadge(value: "5")
+            FloeBadge.new()
+            FloeBadge.pro()
+            FloeBadge.status(online: true)
+        }
+        
+        HStack(spacing: FloeSpacing.Size.lg.value) {
+            Image(systemName: "bell.fill")
+                .font(.system(size: 30))
+                .floeBadge("99+")
+            
+            Image(systemName: "message.fill")
+                .font(.system(size: 30))
+                .floeDotBadge(color: .green)
+        }
+    }
+    .padding()
+    .preferredColorScheme(.dark)
+}
+

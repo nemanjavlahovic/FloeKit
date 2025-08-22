@@ -300,120 +300,289 @@ public extension FloeSearchBar {
 
 // MARK: - Previews
 
-struct FloeSearchBar_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            // Dark mode preview (default)
-            VStack(spacing: 20) {
-                PreviewWrapper()
-            }
-            .padding()
-            .previewDisplayName("Dark Mode")
-            .preferredColorScheme(.dark)
-            
-            // Light mode preview
-            VStack(spacing: 20) {
-                PreviewWrapper()
-            }
-            .padding()
-            .previewDisplayName("Light Mode")
-            .preferredColorScheme(.light)
-        }
-        .previewLayout(.sizeThatFits)
+#Preview("Search Bar Sizes") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeSearchBar(text: .constant(""), placeholder: "Small search", size: .small)
+        FloeSearchBar(text: .constant(""), placeholder: "Medium search", size: .medium)
+        FloeSearchBar(text: .constant(""), placeholder: "Large search", size: .large)
     }
-    
-    struct PreviewWrapper: View {
-        @State private var basicSearch = ""
-        @State private var voiceSearch = ""
-        @State private var filterSearch = ""
-        @State private var cancelSearch = ""
-        @State private var customSearch = ""
+    .padding()
+}
+
+#Preview("Basic Search Bars") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeSearchBar(text: .constant(""), placeholder: "Search products...")
+        FloeSearchBar(text: .constant("iPhone 15"), placeholder: "Search...")
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Search recipes",
+            leadingElement: .icon(Image(systemName: "magnifyingglass"))
+        )
+    }
+    .padding()
+}
+
+#Preview("Search with Voice & Filter") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeSearchBar.withVoiceSearch(
+            text: .constant(""),
+            placeholder: "Search with voice...",
+            onVoiceSearch: { print("Voice search tapped") }
+        )
         
-        var body: some View {
-            VStack(spacing: 20) {
-                Text("FloeSearchBar Examples")
-                    .font(.headline)
-                    .padding()
-                
-                // Basic search bar
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Basic Search")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    FloeSearchBar(
-                        text: $basicSearch,
-                        placeholder: "Search products..."
-                    )
-                }
-                
-                // Search bar with voice search
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("With Voice Search")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    FloeSearchBar.withVoiceSearch(
-                        text: $voiceSearch,
-                        placeholder: "Search with voice...",
-                        onVoiceSearch: {
-                            print("Voice search activated")
-                        },
-                        onSearchSubmit: { query in
-                            print("Searching for: \(query)")
-                        }
-                    )
-                }
-                
-                // Search bar with filter
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("With Filter")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    FloeSearchBar.withFilter(
-                        text: $filterSearch,
-                        placeholder: "Search and filter...",
-                        onFilter: {
-                            print("Filter activated")
-                        }
-                    )
-                }
-                
-                // Search bar with cancel button
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("With Cancel Button")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    FloeSearchBar.withCancelButton(
-                        text: $cancelSearch,
-                        placeholder: "Search with cancel...",
-                        onCancel: {
-                            print("Search cancelled")
-                        }
-                    )
-                }
-                
-                // Custom styled search bar
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Custom Styling")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    FloeSearchBar(
-                        text: $customSearch,
-                        placeholder: "Custom search...",
-                        size: .large,
-                        backgroundColor: FloeColors.accent.opacity(0.1),
-                        borderColor: FloeColors.accent,
-                        borderWidth: 2,
-                        textColor: FloeColors.primary,
-                        cornerRadius: 20,
-                        leadingElement: .button(Image(systemName: "magnifyingglass.circle.fill")) {
-                            print("Custom search button tapped")
-                        },
-                        trailingElement: .button(Image(systemName: "qrcode.viewfinder")) {
-                            print("QR code scanner activated")
-                        }
-                    )
-                }
-            }
-        }
+        FloeSearchBar.withFilter(
+            text: .constant(""),
+            placeholder: "Search and filter...",
+            onFilter: { print("Filter tapped") }
+        )
+        
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Voice + Filter",
+            trailingElement: .voiceSearch({ print("Voice search") })
+        )
     }
-} 
+    .padding()
+}
+
+#Preview("Search with Cancel Button") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeSearchBar.withCancelButton(
+            text: .constant(""),
+            placeholder: "Search...",
+            onCancel: { print("Search cancelled") }
+        )
+        
+        FloeSearchBar.withCancelButton(
+            text: .constant("Current search query"),
+            placeholder: "Search with text...",
+            onCancel: { print("Search cancelled") }
+        )
+        
+        FloeSearchBar(
+            text: .constant("Active search"),
+            placeholder: "Search...",
+            showsCancelButton: true,
+            onCancel: { print("Cancelled") }
+        )
+    }
+    .padding()
+}
+
+#Preview("Custom Leading Elements") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Search locations...",
+            leadingElement: .icon(Image(systemName: "location"))
+        )
+        
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Search menu...",
+            leadingElement: .button(
+                Image(systemName: "line.3.horizontal"),
+                action: { print("Menu tapped") }
+            )
+        )
+        
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Search contacts...",
+            leadingElement: .icon(Image(systemName: "person.circle"))
+        )
+    }
+    .padding()
+}
+
+#Preview("Custom Trailing Elements") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Search...",
+            trailingElement: .icon(Image(systemName: "camera"))
+        )
+        
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Search photos...",
+            trailingElement: .button(
+                Image(systemName: "photo"),
+                action: { print("Photo search") }
+            )
+        )
+        
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "QR Code search...",
+            trailingElement: .button(
+                Image(systemName: "qrcode.viewfinder"),
+                action: { print("QR Code scan") }
+            )
+        )
+    }
+    .padding()
+}
+
+#Preview("Advanced Search Features") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Search with all features...",
+            leadingElement: .button(
+                Image(systemName: "scope"),
+                action: { print("Scope selection") }
+            ),
+            trailingElement: .voiceSearch({ print("Voice search") }),
+            showsCancelButton: true
+        )
+        
+        FloeSearchBar(
+            text: .constant("machine learning"),
+            placeholder: "Advanced search...",
+            leadingElement: .icon(Image(systemName: "brain.head.profile")),
+            trailingElement: .filter({ print("Filter options") }),
+            showsCancelButton: true
+        )
+    }
+    .padding()
+}
+
+#Preview("Custom Styled Search Bars") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Blue themed search...",
+            backgroundColor: Color.blue.opacity(0.1),
+            borderColor: .blue,
+            borderWidth: 2.0,
+            textColor: .blue
+        )
+        
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Rounded search...",
+            cornerRadius: 25,
+            leadingElement: .icon(Image(systemName: "magnifyingglass"))
+        )
+        
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Custom border...",
+            backgroundColor: Color.purple.opacity(0.05),
+            borderColor: .purple,
+            textColor: .purple,
+            trailingElement: .voiceSearch({ print("Voice") })
+        )
+    }
+    .padding()
+}
+
+#Preview("Search with Actions") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Search with submit action...",
+            onSearchSubmit: { query in
+                print("Search submitted: \(query)")
+            }
+        )
+        
+        FloeSearchBar(
+            text: .constant("live query"),
+            placeholder: "Real-time search...",
+            onTextChange: { text in
+                print("Search text changed: \(text)")
+            }
+        )
+        
+        FloeSearchBar.withCancelButton(
+            text: .constant("cancelable search"),
+            placeholder: "Search...",
+            onSearchSubmit: { query in print("Searching: \(query)") },
+            onCancel: { print("Search cancelled") }
+        )
+    }
+    .padding()
+}
+
+#Preview("E-commerce Search Examples") {
+    VStack(spacing: FloeSpacing.Size.lg.value) {
+        Text("E-commerce Search Patterns")
+            .font(FloeFont.font(.title))
+        
+        FloeSearchBar.withVoiceSearch(
+            text: .constant(""),
+            placeholder: "Search products...",
+            onVoiceSearch: { print("Voice product search") }
+        )
+        
+        FloeSearchBar.withFilter(
+            text: .constant(""),
+            placeholder: "Search categories...",
+            onFilter: { print("Category filters") }
+        )
+        
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Scan barcode or search...",
+            leadingElement: .icon(Image(systemName: "magnifyingglass")),
+            trailingElement: .button(
+                Image(systemName: "barcode.viewfinder"),
+                action: { print("Barcode scan") }
+            )
+        )
+    }
+    .padding()
+}
+
+#Preview("Dark Mode") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Search in dark mode..."
+        )
+        
+        FloeSearchBar.withVoiceSearch(
+            text: .constant("dark mode query"),
+            placeholder: "Voice search...",
+            onVoiceSearch: { print("Voice search") }
+        )
+        
+        FloeSearchBar.withCancelButton(
+            text: .constant(""),
+            placeholder: "Search with cancel...",
+            onCancel: { print("Cancelled") }
+        )
+    }
+    .padding()
+    .preferredColorScheme(.dark)
+}
+
+#Preview("Focus States") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        Text("Tap search bars to see focus states")
+            .floeFont(.caption)
+            .foregroundColor(.gray)
+        
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Focus to see border highlight..."
+        )
+        
+        FloeSearchBar(
+            text: .constant(""),
+            placeholder: "Icons change color on focus...",
+            leadingElement: .icon(Image(systemName: "magnifyingglass")),
+            trailingElement: .voiceSearch({ print("Voice") })
+        )
+        
+        FloeSearchBar.withCancelButton(
+            text: .constant(""),
+            placeholder: "Cancel button appears on focus...",
+            onCancel: { print("Cancelled") }
+        )
+    }
+    .padding()
+}
+

@@ -160,69 +160,242 @@ public struct FloeTextField: View {
 
 // MARK: - Previews
 
-struct FloeTextField_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            // Dark mode preview (default)
-            VStack(spacing: 20) {
-                PreviewWrapper()
-            }
-            .padding()
-            .previewDisplayName("Dark Mode")
-            .preferredColorScheme(.dark)
-            
-            // Light mode preview
-            VStack(spacing: 20) {
-                PreviewWrapper()
-            }
-            .padding()
-            .previewDisplayName("Light Mode")
-            .preferredColorScheme(.light)
-        }
-        .previewLayout(.sizeThatFits)
+#Preview("Text Field Sizes") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeTextField(text: .constant("Small text field"), placeholder: "Small", size: .small)
+        FloeTextField(text: .constant("Medium text field"), placeholder: "Medium", size: .medium)
+        FloeTextField(text: .constant("Large text field"), placeholder: "Large", size: .large)
     }
-    
-    struct PreviewWrapper: View {
-        @State private var defaultText = ""
-        @State private var searchText = "With Icons"
-        @State private var passwordText = "Password123"
-        @State private var errorText = "Error state"
-        @State private var bioText = "Character limit"
+    .padding()
+}
+
+#Preview("Text Field Placeholders") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeTextField(text: .constant(""), placeholder: "Enter your name")
+        FloeTextField(text: .constant(""), placeholder: "Email address")
+        FloeTextField(text: .constant(""), placeholder: "Phone number")
+        FloeTextField(text: .constant(""), placeholder: "Search...")
+    }
+    .padding()
+}
+
+#Preview("Text Fields with Icons") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeTextField(
+            text: .constant(""),
+            placeholder: "Search",
+            leadingIcon: Image(systemName: "magnifyingglass")
+        )
         
-        var body: some View {
-            VStack(spacing: 20) {
-                FloeTextField(
-                    text: $defaultText,
-                    placeholder: "Default TextField"
-                )
-                
-                FloeTextField(
-                    text: $searchText,
-                    placeholder: "Search...",
-                    leadingIcon: Image(systemName: "magnifyingglass"),
-                    trailingIcon: Image(systemName: "mic.fill")
-                )
-                
-                FloeTextField(
-                    text: $passwordText,
-                    placeholder: "Enter password",
-                    leadingIcon: Image(systemName: "lock.fill"),
-                    isSecure: true
-                )
-                
-                FloeTextField(
-                    text: $errorText,
-                    placeholder: "Username",
-                    leadingIcon: Image(systemName: "person.fill"),
-                    errorMessage: "Username is already taken"
-                )
-                
-                FloeTextField(
-                    text: $bioText,
-                    placeholder: "Bio",
-                    characterLimit: 100
-                )
-            }
-        }
+        FloeTextField(
+            text: .constant("john.doe@example.com"),
+            placeholder: "Email",
+            leadingIcon: Image(systemName: "envelope"),
+            trailingIcon: Image(systemName: "checkmark.circle.fill")
+        )
+        
+        FloeTextField(
+            text: .constant(""),
+            placeholder: "Location",
+            leadingIcon: Image(systemName: "location"),
+            trailingIcon: Image(systemName: "chevron.down")
+        )
     }
-} 
+    .padding()
+}
+
+#Preview("Secure Text Fields") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeTextField(
+            text: .constant(""),
+            placeholder: "Password",
+            leadingIcon: Image(systemName: "lock"),
+            isSecure: true
+        )
+        
+        FloeTextField(
+            text: .constant("mypassword"),
+            placeholder: "Current Password",
+            leadingIcon: Image(systemName: "lock.shield"),
+            isSecure: true
+        )
+        
+        FloeTextField(
+            text: .constant(""),
+            placeholder: "Confirm Password",
+            leadingIcon: Image(systemName: "lock.fill"),
+            isSecure: true
+        )
+    }
+    .padding()
+}
+
+#Preview("Text Fields with Character Limits") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeTextField(
+            text: .constant("Hello world"),
+            placeholder: "Tweet",
+            characterLimit: 280
+        )
+        
+        FloeTextField(
+            text: .constant("This is a very long message that exceeds the limit"),
+            placeholder: "Short message",
+            characterLimit: 25
+        )
+        
+        FloeTextField(
+            text: .constant("John"),
+            placeholder: "Username",
+            leadingIcon: Image(systemName: "person"),
+            characterLimit: 20
+        )
+    }
+    .padding()
+}
+
+#Preview("Text Fields with Errors") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeTextField(
+            text: .constant("invalid-email"),
+            placeholder: "Email",
+            leadingIcon: Image(systemName: "envelope"),
+            errorMessage: "Please enter a valid email address"
+        )
+        
+        FloeTextField(
+            text: .constant("123"),
+            placeholder: "Password",
+            leadingIcon: Image(systemName: "lock"),
+            isSecure: true,
+            errorMessage: "Password must be at least 8 characters"
+        )
+        
+        FloeTextField(
+            text: .constant(""),
+            placeholder: "Required field",
+            errorMessage: "This field is required"
+        )
+    }
+    .padding()
+}
+
+#Preview("Custom Styled Text Fields") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeTextField(
+            text: .constant("Custom background"),
+            placeholder: "Custom style",
+            backgroundColor: Color.blue.opacity(0.1),
+            borderColor: .blue,
+            borderWidth: 2.0,
+            textColor: .blue
+        )
+        
+        FloeTextField(
+            text: .constant("Rounded text field"),
+            placeholder: "Very rounded",
+            cornerRadius: 25
+        )
+        
+        FloeTextField(
+            text: .constant("Purple theme"),
+            placeholder: "Custom colors",
+            backgroundColor: Color.purple.opacity(0.1),
+            borderColor: .purple,
+            textColor: .purple,
+            leadingIcon: Image(systemName: "star.fill")
+        )
+    }
+    .padding()
+}
+
+#Preview("Interactive States") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeTextField(
+            text: .constant(""),
+            placeholder: "Focus me",
+            leadingIcon: Image(systemName: "textformat")
+        )
+        
+        FloeTextField(
+            text: .constant("Clear me"),
+            placeholder: "Has clear button",
+            trailingIcon: Image(systemName: "info.circle")
+        )
+        
+        FloeTextField(
+            text: .constant("Type here and watch the counter"),
+            placeholder: "Character counter",
+            characterLimit: 50
+        )
+    }
+    .padding()
+}
+
+#Preview("Form Example") {
+    VStack(spacing: FloeSpacing.Size.lg.value) {
+        Text("Sign Up Form")
+            .font(FloeFont.font(.title))
+        
+        FloeTextField(
+            text: .constant(""),
+            placeholder: "Full Name",
+            leadingIcon: Image(systemName: "person")
+        )
+        
+        FloeTextField(
+            text: .constant(""),
+            placeholder: "Email",
+            leadingIcon: Image(systemName: "envelope")
+        )
+        
+        FloeTextField(
+            text: .constant(""),
+            placeholder: "Phone Number",
+            leadingIcon: Image(systemName: "phone")
+        )
+        
+        FloeTextField(
+            text: .constant(""),
+            placeholder: "Password",
+            leadingIcon: Image(systemName: "lock"),
+            isSecure: true,
+            characterLimit: 50
+        )
+        
+        FloeTextField(
+            text: .constant(""),
+            placeholder: "Bio (Optional)",
+            size: .large,
+            characterLimit: 150
+        )
+    }
+    .padding()
+}
+
+#Preview("Dark Mode") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeTextField(
+            text: .constant("Dark mode text"),
+            placeholder: "Placeholder text",
+            leadingIcon: Image(systemName: "moon")
+        )
+        
+        FloeTextField(
+            text: .constant(""),
+            placeholder: "Search in dark mode",
+            leadingIcon: Image(systemName: "magnifyingglass"),
+            trailingIcon: Image(systemName: "mic")
+        )
+        
+        FloeTextField(
+            text: .constant("error@example.com"),
+            placeholder: "Email",
+            leadingIcon: Image(systemName: "envelope"),
+            errorMessage: "Invalid email format"
+        )
+    }
+    .padding()
+    .preferredColorScheme(.dark)
+}
+

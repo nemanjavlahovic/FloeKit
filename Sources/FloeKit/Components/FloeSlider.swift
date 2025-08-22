@@ -155,9 +155,8 @@ public struct FloeSlider: View {
     
     private var valueLabel: some View {
         Text(showLabels.format(value, range: range))
-            .font(size.font)
+            .font(.system(size: fontSizeForSliderSize(size), weight: .medium))
             .foregroundColor(FloeColors.primary)
-            .fontWeight(.medium)
     }
     
     private var horizontalSlider: some View {
@@ -332,6 +331,16 @@ public struct FloeSlider: View {
     }
 }
 
+// MARK: - Helper Functions
+
+private func fontSizeForSliderSize(_ size: FloeSlider.Size) -> CGFloat {
+    switch size {
+    case .small: return 12
+    case .medium: return 16
+    case .large: return 18
+    }
+}
+
 // MARK: - Convenience Initializers
 
 public extension FloeSlider {
@@ -375,204 +384,3 @@ public extension FloeSlider {
     }
 }
 
-// MARK: - Previews
-
-struct FloeSlider_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            // Dark mode preview (default)
-            InteractiveSliderPreview()
-                .preferredColorScheme(.dark)
-                .previewDisplayName("Interactive - Dark Mode")
-            
-            // Light mode preview
-            InteractiveSliderPreview()
-                .preferredColorScheme(.light)
-                .previewDisplayName("Interactive - Light Mode")
-        }
-        .previewLayout(.sizeThatFits)
-    }
-}
-
-// MARK: - Interactive Preview Container
-private struct InteractiveSliderPreview: View {
-    @State private var basicValue: Double = 50
-    @State private var percentageValue: Double = 75
-    @State private var stepValue: Double = 2.5
-    @State private var verticalValue: Double = 30
-    @State private var volumeValue: Double = 0.7
-    @State private var customValue: Double = 80
-    @State private var temperatureValue: Double = 22.5
-    
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 30) {
-                // Basic Slider
-                VStack(spacing: 8) {
-                    HStack {
-                        Text("Basic Slider")
-                            .font(.headline)
-                        Spacer()
-                        Text("Value: \(Int(basicValue))")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    FloeSlider(value: $basicValue, in: 0...100, showLabels: .value)
-                }
-                
-                // Percentage Slider
-                VStack(spacing: 8) {
-                    HStack {
-                        Text("Percentage Slider")
-                            .font(.headline)
-                        Spacer()
-                        Text("\(Int(percentageValue))%")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    FloeSlider.percentage(value: $percentageValue, showLabels: true)
-                }
-                
-                // Custom Range with Steps
-                VStack(spacing: 8) {
-                    HStack {
-                        Text("Rating (0-5, step 0.5)")
-                            .font(.headline)
-                        Spacer()
-                        Text("⭐ \(String(format: "%.1f", stepValue))")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    FloeSlider(
-                        value: $stepValue,
-                        in: 0...5,
-                        step: 0.5,
-                        showLabels: .value,
-                        showMinMax: true
-                    )
-                }
-                
-                // Temperature Slider
-                VStack(spacing: 8) {
-                    HStack {
-                        Text("Temperature Control")
-                            .font(.headline)
-                        Spacer()
-                        Text("\(String(format: "%.1f", temperatureValue))°C")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    FloeSlider(
-                        value: $temperatureValue,
-                        in: 16...30,
-                        step: 0.5,
-                        showLabels: .custom({ "\(String(format: "%.1f", $0))°C" }),
-                        fillColor: temperatureColor,
-                        thumbColor: temperatureColor
-                    )
-                }
-                
-                // Horizontal Layout with Vertical Slider and Volume
-                HStack(spacing: 30) {
-                    // Vertical Slider
-                    VStack {
-                        Text("Volume")
-                            .font(.headline)
-                        FloeSlider(
-                            value: $verticalValue,
-                            in: 0...100,
-                            orientation: .vertical,
-                            showLabels: .percentage,
-                            fillColor: FloeColors.secondary
-                        )
-                        .frame(height: 200)
-                        Text("\(Int(verticalValue))%")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .frame(maxWidth: .infinity)
-                    
-                    // Volume Style
-                    VStack {
-                        Text("Brightness")
-                            .font(.headline)
-                        FloeSlider.volume(value: $volumeValue)
-                            .frame(maxWidth: .infinity)
-                        Text("\(Int(volumeValue * 100))%")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .frame(maxWidth: .infinity)
-                }
-                
-                // Large Custom Styled Slider
-                VStack(spacing: 8) {
-                    HStack {
-                        Text("Custom Styled (Large)")
-                            .font(.headline)
-                        Spacer()
-                        Text("\(Int(customValue))%")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    FloeSlider(
-                        value: $customValue,
-                        in: 0...100,
-                        size: .large,
-                        showLabels: .percentage,
-                        fillColor: FloeColors.accent,
-                        thumbColor: FloeColors.accent,
-                        thumbBorderColor: .white
-                    )
-                }
-                
-                // Animation Demo Button
-                VStack(spacing: 12) {
-                    Text("Animation Demo")
-                        .font(.headline)
-                    
-                    HStack(spacing: 12) {
-                        Button("Random Values") {
-                            withAnimation(.easeInOut(duration: 0.8)) {
-                                basicValue = Double.random(in: 0...100)
-                                percentageValue = Double.random(in: 0...100)
-                                stepValue = Double.random(in: 0...5)
-                                verticalValue = Double.random(in: 0...100)
-                                volumeValue = Double.random(in: 0...1)
-                                customValue = Double.random(in: 0...100)
-                                temperatureValue = Double.random(in: 16...30)
-                            }
-                        }
-                        .buttonStyle(.borderedProminent)
-                        
-                        Button("Reset") {
-                            withAnimation(.easeInOut(duration: 0.6)) {
-                                basicValue = 50
-                                percentageValue = 75
-                                stepValue = 2.5
-                                verticalValue = 30
-                                volumeValue = 0.7
-                                customValue = 80
-                                temperatureValue = 22.5
-                            }
-                        }
-                        .buttonStyle(.bordered)
-                    }
-                }
-            }
-            .padding()
-        }
-    }
-    
-    private var temperatureColor: Color {
-        // Dynamic color based on temperature value
-        let normalizedTemp = (temperatureValue - 16) / (30 - 16)
-        if normalizedTemp < 0.3 {
-            return .blue
-        } else if normalizedTemp < 0.7 {
-            return .green
-        } else {
-            return .red
-        }
-    }
-} 

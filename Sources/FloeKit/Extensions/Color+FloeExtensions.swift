@@ -302,4 +302,10 @@ public extension FloeColors {
     static let error30 = error.opacity30
     static let error40 = error.opacity40
     static let error50 = error.opacity50
+}
+
+// MARK: - Additional Color Constants
+public extension Color {
+    /// A gold color
+    static let gold = Color(red: 0.85, green: 0.65, blue: 0.13)
 } 

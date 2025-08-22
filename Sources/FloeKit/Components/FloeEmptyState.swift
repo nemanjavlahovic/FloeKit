@@ -284,7 +284,7 @@ extension FloeEmptyState {
                 message: message,
                 iconColor: FloeColors.neutral40
             ) {
-                FloeButton.ghost("Clear Search") {
+                FloeButton.secondary("Clear Search") {
                     clearAction()
                 }
             }
@@ -314,98 +314,3 @@ extension FloeEmptyState {
     }
 }
 
-// MARK: - Previews
-
-struct FloeEmptyState_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            // Dark mode
-            ScrollView {
-                VStack(spacing: 40) {
-                    FloeEmptyState(
-                        icon: "sparkles",
-                        title: "Your day awaits",
-                        message: "No activities scheduled for today. Start by creating your first habit."
-                    ) {
-                        FloeButton.primary("Create First Habit") {}
-                    }
-                    
-                    Divider()
-                    
-                    FloeEmptyState.noData()
-                    
-                    Divider()
-                    
-                    FloeEmptyState.error(retryAction: {})
-                    
-                    Divider()
-                    
-                    FloeEmptyState.success(
-                        title: "All Done!",
-                        message: "You've completed all your tasks for today.",
-                        action: AnyView(FloeButton.success("View Summary") {})
-                    )
-                    
-                    Divider()
-                    
-                    FloeEmptyState.search(clearAction: {})
-                    
-                    Divider()
-                    
-                    FloeEmptyState.loading(message: "Fetching your data...")
-                    
-                    Divider()
-                    
-                    // Compact style
-                    FloeEmptyState(
-                        icon: "heart",
-                        title: "No Favorites",
-                        message: "Items you favorite will appear here.",
-                        style: .compact
-                    )
-                    
-                    // Large style
-                    FloeEmptyState(
-                        icon: "star.fill",
-                        title: "Welcome!",
-                        message: "This is a large empty state with prominent visuals.",
-                        style: .large,
-                        iconColor: FloeColors.accent
-                    ) {
-                        FloeButtonGroup {
-                            FloeButton.ghost("Learn More") {}
-                            FloeButton.primary("Get Started") {}
-                        }
-                    }
-                }
-                .padding()
-            }
-            .preferredColorScheme(.dark)
-            .previewDisplayName("Dark Mode")
-            
-            // Light mode
-            ScrollView {
-                VStack(spacing: 40) {
-                    FloeEmptyState(
-                        icon: "sparkles",
-                        title: "Your day awaits",
-                        message: "No activities scheduled for today. Start by creating your first habit."
-                    ) {
-                        FloeButton.primary("Create First Habit") {}
-                    }
-                    
-                    Divider()
-                    
-                    FloeEmptyState.noData()
-                    
-                    Divider()
-                    
-                    FloeEmptyState.error(retryAction: {})
-                }
-                .padding()
-            }
-            .preferredColorScheme(.light)
-            .previewDisplayName("Light Mode")
-        }
-    }
-}

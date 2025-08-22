@@ -287,99 +287,23 @@ extension FloeButton {
     public static func primary(
         _ title: String,
         icon: Image? = nil,
-        size: Size = .medium,
-        isLoading: Bool = false,
         action: @escaping () -> Void
     ) -> FloeButton {
         FloeButton(
             title,
-            size: size,
             style: .primary,
             icon: icon,
-            isLoading: isLoading,
             action: action
         )
     }
     
     public static func secondary(
         _ title: String,
-        icon: Image? = nil,
-        size: Size = .medium,
-        isLoading: Bool = false,
         action: @escaping () -> Void
     ) -> FloeButton {
         FloeButton(
             title,
-            size: size,
             style: .secondary,
-            icon: icon,
-            isLoading: isLoading,
-            action: action
-        )
-    }
-    
-    public static func ghost(
-        _ title: String,
-        icon: Image? = nil,
-        size: Size = .medium,
-        isLoading: Bool = false,
-        action: @escaping () -> Void
-    ) -> FloeButton {
-        FloeButton(
-            title,
-            size: size,
-            style: .ghost,
-            icon: icon,
-            isLoading: isLoading,
-            action: action
-        )
-    }
-    
-    public static func danger(
-        _ title: String,
-        icon: Image? = nil,
-        size: Size = .medium,
-        isLoading: Bool = false,
-        action: @escaping () -> Void
-    ) -> FloeButton {
-        FloeButton(
-            title,
-            size: size,
-            style: .danger,
-            icon: icon,
-            isLoading: isLoading,
-            action: action
-        )
-    }
-    
-    public static func success(
-        _ title: String,
-        icon: Image? = nil,
-        size: Size = .medium,
-        isLoading: Bool = false,
-        action: @escaping () -> Void
-    ) -> FloeButton {
-        FloeButton(
-            title,
-            size: size,
-            style: .success,
-            icon: icon,
-            isLoading: isLoading,
-            action: action
-        )
-    }
-    
-    public static func floating(
-        _ title: String,
-        icon: Image? = nil,
-        size: Size = .medium,
-        action: @escaping () -> Void
-    ) -> FloeButton {
-        FloeButton(
-            title,
-            size: size,
-            style: .floating,
-            icon: icon,
             action: action
         )
     }
@@ -387,99 +311,114 @@ extension FloeButton {
 
 // MARK: - Previews
 
-struct FloeButton_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            // Dark mode preview (default)
-            ScrollView {
-                VStack(spacing: 20) {
-                    Text("Button Styles")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    FloeButton.primary("Primary Button") {}
-                    
-                    FloeButton.secondary("Secondary Button") {}
-                    
-                    FloeButton.ghost("Ghost Button") {}
-                    
-                    FloeButton.danger("Danger Button") {}
-                    
-                    FloeButton.success("Success Button") {}
-                    
-                    HStack {
-                        Spacer()
-                        FloeButton.floating("Floating Action", icon: Image(systemName: "plus")) {}
-                    }
-                    
-                    Divider()
-                    
-                    Text("Button Sizes")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    FloeButton("Small Button", size: .small) {}
-                    FloeButton("Medium Button", size: .medium) {}
-                    FloeButton("Large Button", size: .large) {}
-                    
-                    Divider()
-                    
-                    Text("Button States")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    FloeButton("Loading State", isLoading: true) {}
-                    FloeButton("Disabled State", isEnabled: false) {}
-                    
-                    Divider()
-                    
-                    Text("Button Group")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    FloeButtonGroup {
-                        FloeButton.ghost("Cancel") {}
-                        FloeButton.primary("Save") {}
-                    }
-                    
-                    FloeButtonGroup(orientation: .vertical) {
-                        FloeButton.primary("Option 1") {}
-                        FloeButton.secondary("Option 2") {}
-                        FloeButton.ghost("Option 3") {}
-                    }
-                }
-                .padding()
-            }
-            .preferredColorScheme(.dark)
-            .previewDisplayName("Dark Mode")
-            
-            // Light mode preview
-            ScrollView {
-                VStack(spacing: 20) {
-                    Text("Button Styles")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    FloeButton.primary("Primary Button") {}
-                    
-                    FloeButton.secondary("Secondary Button") {}
-                    
-                    FloeButton.ghost("Ghost Button") {}
-                    
-                    FloeButton.danger("Danger Button") {}
-                    
-                    FloeButton.success("Success Button") {}
-                    
-                    HStack {
-                        Spacer()
-                        FloeButton.floating("Floating Action", icon: Image(systemName: "plus")) {}
-                    }
-                }
-                .padding()
-            }
-            .preferredColorScheme(.light)
-            .previewDisplayName("Light Mode")
-        }
-        .previewLayout(.sizeThatFits)
+#Preview("All Button Sizes") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeButton("Small Button", size: .small, action: {})
+        FloeButton("Medium Button", size: .medium, action: {})
+        FloeButton("Large Button", size: .large, action: {})
     }
+    .padding()
 }
+
+#Preview("All Button Styles") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeButton("Primary", style: .primary, action: {})
+        FloeButton("Secondary", style: .secondary, action: {})
+        FloeButton("Ghost", style: .ghost, action: {})
+        FloeButton("Danger", style: .danger, action: {})
+        FloeButton("Success", style: .success, action: {})
+        FloeButton("Floating", style: .floating, action: {})
+    }
+    .padding()
+}
+
+#Preview("Button States") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeButton("Enabled Button", action: {})
+        FloeButton("Disabled Button", isEnabled: false, action: {})
+        FloeButton("Loading Button", isLoading: true, action: {})
+    }
+    .padding()
+}
+
+#Preview("Buttons with Icons") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeButton("Download", icon: Image(systemName: "arrow.down"), action: {})
+        FloeButton("Share", size: .small, icon: Image(systemName: "square.and.arrow.up"), action: {})
+        FloeButton("Delete", style: .danger, icon: Image(systemName: "trash"), action: {})
+        FloeButton("Success", style: .success, icon: Image(systemName: "checkmark"), action: {})
+    }
+    .padding()
+}
+
+#Preview("Custom Button Variants") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeButton(
+            "Custom Colors",
+            backgroundColor: .purple,
+            textColor: .white,
+            action: {}
+        )
+        
+        FloeButton(
+            "Custom Border",
+            style: .ghost,
+            borderColor: .orange,
+            borderWidth: 2.0,
+            action: {}
+        )
+        
+        FloeButton(
+            "Custom Radius",
+            cornerRadius: 25,
+            action: {}
+        )
+    }
+    .padding()
+}
+
+#Preview("Button Groups") {
+    VStack(spacing: FloeSpacing.Size.lg.value) {
+        FloeButtonGroup(orientation: .horizontal) {
+            FloeButton("Cancel", style: .ghost, action: {})
+            FloeButton("Save", style: .primary, action: {})
+        }
+        
+        FloeButtonGroup(orientation: .vertical) {
+            FloeButton("Edit Profile", style: .secondary, action: {})
+            FloeButton("Change Password", style: .secondary, action: {})
+            FloeButton("Delete Account", style: .danger, action: {})
+        }
+    }
+    .padding()
+}
+
+#Preview("Dark Mode") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeButton("Primary", style: .primary, action: {})
+        FloeButton("Secondary", style: .secondary, action: {})
+        FloeButton("Ghost", style: .ghost, action: {})
+        FloeButton("Floating", style: .floating, action: {})
+    }
+    .padding()
+    .preferredColorScheme(.dark)
+}
+
+#Preview("All Sizes with Icons") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeButton("Small", size: .small, icon: Image(systemName: "star"), action: {})
+        FloeButton("Medium", size: .medium, icon: Image(systemName: "heart"), action: {})
+        FloeButton("Large", size: .large, icon: Image(systemName: "bookmark"), action: {})
+    }
+    .padding()
+}
+
+#Preview("Loading States") {
+    VStack(spacing: FloeSpacing.Size.md.value) {
+        FloeButton("Loading Primary", style: .primary, isLoading: true, action: {})
+        FloeButton("Loading Ghost", style: .ghost, isLoading: true, action: {})
+        FloeButton("Loading Danger", style: .danger, isLoading: true, action: {})
+    }
+    .padding()
+}
+
